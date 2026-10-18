@@ -3,7 +3,7 @@
 Code, preregistrations and results for **"Does the Direction Track the Process? A Preregistered Validity Battery for Published Hidden-State Directions"** (Sam Ramdan, October 2026).
 
 - Paper: [`paper/direction-validity-battery.pdf`](paper/direction-validity-battery.pdf)
-- Per-item results: `results-per-item.zip` in the Zenodo record (kept out of git because of its size)
+- Per-item results: `results-per-item-part01.zip` … `part10.zip` in the Zenodo record (kept out of git because of their size; unzip all ten into one folder)
 - Earlier papers in the series: the compute–retrieve axis ([all versions](https://doi.org/10.5281/zenodo.19444314); [version 2 with the preregistered causal test](https://doi.org/10.5281/zenodo.23374358)) and [A Compounding Fingerprint](https://doi.org/10.5281/zenodo.23318679)
 
 ## What the paper does
