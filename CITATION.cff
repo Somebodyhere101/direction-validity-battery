@@ -6,6 +6,10 @@ authors:
     given-names: Sam
 repository-code: "https://github.com/Somebodyhere101/direction-validity-battery"
 license: MIT
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23450400
+    description: "The paper, its source and the per-item results on Zenodo"
 preferred-citation:
   type: article
   title: "Does the Direction Track the Process? A Preregistered Validity Battery for Published Hidden-State Directions"
@@ -16,6 +20,7 @@ preferred-citation:
   month: 10
   publisher:
     name: Zenodo
+  doi: 10.5281/zenodo.23450400
 references:
   - type: article
     title: "The Compute–Retrieve Axis Separates Prompt Types, Not Processes: Original Results, Confounds, and a Preregistered Causal Test"
