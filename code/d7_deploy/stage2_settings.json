@@ -1,0 +1,22 @@
+{
+ "check0a": {
+  "d1": {
+   "ablation_drop_rel_min": 0.5,
+   "actadd_rise_min": 0.2
+  },
+  "d2": {
+   "mean_heldout_acc_min": 0.7
+  },
+  "d3": {
+   "cal_auc_min": 0.9
+  },
+  "d5": {
+   "kw_rel_min": 1.5,
+   "cos_released_min": 0.8
+  },
+  "d7": {
+   "sep_mean_auc_min": 0.7,
+   "refusal_rise_min": 0.2
+  }
+ }
+}

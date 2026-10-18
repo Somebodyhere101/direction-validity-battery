@@ -1,0 +1,19 @@
+# paper 6, D6 reasoning strength, main runs (Stage 2b D6). Estimated GPU-hours (upper bounds, cap 4096): r1-qwen-7b 19.5 (full design), r1-llama-8b 16.2 (reduced), q3-8b 31.6 (reduced); Check E only for signs that pass Check D (+3.4 / 7.6 / 8.9 h per sign). Clean/push/E are skipped for a model that fails the Check 0a gate.
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py r1-qwen-7b cal main > logs\d6_r1-qwen-7b_cal_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py r1-qwen-7b clean main > logs\d6_r1-qwen-7b_clean_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py r1-qwen-7b push main > logs\d6_r1-qwen-7b_push_main.log 2>&1
+paper6_d6 :: python analyze_d6.py r1-qwen-7b main > logs\d6_r1-qwen-7b_analyze_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py r1-qwen-7b pushE main auto > logs\d6_r1-qwen-7b_pushE_main.log 2>&1
+paper6_d6 :: python analyze_d6.py r1-qwen-7b main > logs\d6_r1-qwen-7b_analyze2_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py r1-llama-8b cal main > logs\d6_r1-llama-8b_cal_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py r1-llama-8b clean main > logs\d6_r1-llama-8b_clean_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py r1-llama-8b push main > logs\d6_r1-llama-8b_push_main.log 2>&1
+paper6_d6 :: python analyze_d6.py r1-llama-8b main > logs\d6_r1-llama-8b_analyze_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py r1-llama-8b pushE main auto > logs\d6_r1-llama-8b_pushE_main.log 2>&1
+paper6_d6 :: python analyze_d6.py r1-llama-8b main > logs\d6_r1-llama-8b_analyze2_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py q3-8b cal main > logs\d6_q3-8b_cal_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py q3-8b clean main > logs\d6_q3-8b_clean_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py q3-8b push main > logs\d6_q3-8b_push_main.log 2>&1
+paper6_d6 :: python analyze_d6.py q3-8b main > logs\d6_q3-8b_analyze_main.log 2>&1
+paper6_d6 :: set P6_MEM_FRACTION=0.85&& python run_d6.py q3-8b pushE main auto > logs\d6_q3-8b_pushE_main.log 2>&1
+paper6_d6 :: python analyze_d6.py q3-8b main > logs\d6_q3-8b_analyze2_main.log 2>&1

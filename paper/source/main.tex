@@ -1,0 +1,320 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage[round]{natbib}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{titling}
+\usepackage{float}
+
+\setlength{\droptitle}{-1cm}
+\pretitle{\begin{center}\Large\bfseries}
+\posttitle{\end{center}\vspace{0.3cm}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black
+}
+\setlist{itemsep=2pt,topsep=3pt}
+
+% DRAFT marker for numbers that wait on runs still in the queue; none may remain at submission.
+\newcommand{\pending}[1]{\textcolor{red!70!black}{[pending: #1]}}
+\newcommand{\dhat}{\hat{d}}
+\newcommand{\verdict}[1]{\textsc{\MakeLowercase{#1}}}
+
+\title{Does the Direction Track the Process?\\ A Preregistered Validity Battery for Published Hidden-State Directions}
+
+\author{
+  Sam Ramdan\\
+  Independent Researcher\\
+  \texttt{sr4729820@gmail.com}
+}
+\date{October 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+A linear direction in a language model's hidden states is usually defended by two facts: it separates two sets of prompts that differ by design, and adding it to the hidden state changes the output in the expected way. Neither fact shows that the direction follows the process it is named after. Earlier papers in this series found a published-style direction that separated prompt types in twelve models while tracking neither the computation it was named for nor its supposed output, and that mostly toggled reply format. Here we package the checks that exposed it as a preregistered battery and apply it uniformly to published directions on open models of at most 14B parameters. The battery asks whether a direction (A) follows a per-item target measured from what the model actually does, (B) still separates its classes on stimuli matched for template, length and vocabulary, (C) beats two directions built from the same calibration prompts without their labels, (D) steers beyond random pushes that change the output distribution by the same KL, and (E) hands its effect on to later layers rather than acting as an output bias; an oracle direction built from the target itself tells whether a failure is informative.
+We apply the battery to nine published directions on eight open models (27 direction--model pairs, plus a second item set for one direction). The two controls pass: the refusal and truth directions are valid drivers overall, although refusal acts as an output bias in OLMo-2. The compute--retrieve axis reproduces the earlier causal null. None of the six process directions receives a valid verdict. Four of them (LiReFs, backtracking, the sycophancy persona vector, true thinking) are \emph{target not linear}: an oracle built from the process itself reads it at the published layer in 17 of 19 process runs, but a one-gap push of the oracle never moves it, while for the two controls it always does. In exploratory pushes up to eight gaps, targets that are a choice of answer become pushable along the oracle, while targets that describe the course of the computation (settling depth, chain-of-thought necessity, backtracking) move in one of twelve runs, and the published directions almost never move their targets. Two (known-entity awareness, reasoning strength) fail to reproduce their authors' headline effect in at least two models; where reasoning strength does reproduce, it is a length direction. Behind these verdicts, known-entity awareness and true thinking track their processes in every panel model and beat both label-free competitors, a reasoning direction again moves reply format rather than computation, and the sycophancy vector reads as agreement with the user rather than as giving in. Weight-randomised models reproduce calibration separation at AUC $\ge 0.80$ for four of nine directions. Effects judged against norm-matched random directions exceed effects judged against KL-matched ones by a quarter of a smallest effect of interest on average.
+\end{abstract}
+
+\section{Introduction}
+
+Interpretability papers often claim that a linear direction $d$ in a model's residual stream \emph{tracks} a process (its projection rises and falls with the process) or \emph{drives} it (adding $d$ changes the process). The usual evidence has two parts. The direction separates two sets of prompts that differ in the process by construction, and adding it at some norm changes the output in the expected way. Both parts are about the prompts and the output, not about the process.
+
+This series has run into the gap between the two more than once. The compute--retrieve (CR) axis separated computation prompts from retrieval prompts at AUC $\ge 0.988$ in twelve models \citep{ramdan2026crv1}. Under exact format and length matching it reversed in three of five base models and followed context vocabulary more than retrievability \citep{ramdan2026fingerprint}. In a preregistered causal test it neither tracked nor moved the depth at which an arithmetic answer settles; what it did move was reply format, and a direction built from the same sixty calibration prompts without their labels (long minus short within each class) did the same and tracked settling depth better \citep{ramdan2026crv2}. In Qwen3 models, reports of injected thoughts ran mainly through one content-free direction that acted as a general yes-bias \citep{ramdan2026injected}. None of this was visible from calibration AUC or from a fixed-norm steering demonstration.
+
+The checks that exposed these failures are generic and cheap. Measure the process per item from what the model does, not from the prompt's class. Match stimuli on template, length and vocabulary. Compare with a label-free direction from the same calibration prompts. Compare with random pushes matched on the change they cause in the output distribution rather than on norm. Find the stage at which the push's effect is decided. Each check has precedents taken one at a time (Section~\ref{sec:related}); what has been missing is a fixed battery, validated on directions whose answer is known, and applied uniformly to published directions. This is the analogue, for directions, of the sanity checks \citet{adebayo2018sanity} proposed for saliency maps.
+
+We preregistered the battery, its pass criteria, its verdict rules and seven hypotheses before writing any code, and froze per-direction settings after pilots on separate items. We apply it to nine published directions on eight open models: two controls (refusal, \citealp{arditi2024refusal}; truth, \citealp{marks2024geometry}), the CR axis as a known-answer case, and six directions that claim to track or drive a process.
+
+The controls pass, so the battery is not built to fail: refusal and truth receive \verdict{VALID DRIVER} overall. None of the six process directions does (H5). The commonest reason is not that the direction fails but that the target cannot be pushed at the published layer at all: an oracle direction built from the process reads it in 17 of 19 process runs, yet a one-gap push of the oracle moves the process in none of them, against all six control runs. Exploratory pushes up to eight gaps show a gradient: choices of answer (hallucinating, giving in, following a perturbed step) become pushable along the oracle, while the course of the computation (how deep the answer settles, whether chain of thought is needed, whether the model backtracks) almost never moves, and the published directions move their targets in one of the twelve runs tested at four and eight gaps. Two directions do not reproduce their authors' headline effect in most models, and the only \verdict{NUISANCE} verdict falls on reasoning strength in its home model, where the rebuilt vector is nearly identical to the label-free first principal component and does no better than it. Behind the verdicts, two directions (known-entity awareness and true thinking) track their processes in every model and beat both label-free competitors; a second reasoning direction, like the CR axis, moves reply format instead of computation; and the sycophancy persona vector is higher when the user is right than when the user is wrong. Weight-randomised models reproduce calibration separation for four of nine directions, and norm-matched random baselines overstate steering effects relative to KL-matched ones (H4).
+
+\section{Related work}\label{sec:related}
+
+\paragraph{Sanity checks and control tasks.} \citet{adebayo2018sanity} showed that several saliency methods give nearly the same maps for a trained network and for one with randomised weights. \citet{hewitt2019control} proposed control tasks so that probe accuracy is read against what a probe can learn from arbitrary labels. \citet{korznikov2026sae} recently ran random baselines against sparse autoencoders. Our Check~0b is the model-randomisation test for directions, and our label-permuted directions are the control-task analogue.
+
+\paragraph{Process-defined labels.} Several of the directions we test were built from labels defined by behaviour: known versus unknown entities by whether the model answers correctly \citep{ferrando2025entities}, annotated reasoning behaviours \citep{ward2025backtracking,venhoff2025steering}, and the True Thinking Score \citep{zhao2025truethinking}. \citet{kirch2026offpolicy} show that probes trained on what the monitored model actually did generalise better than probes trained on off-policy data. None of these re-scores other authors' directions against per-item process targets, which is our Check~A.
+
+\paragraph{Matched stimuli and confounds.} Matched contrasts are standard in causal-abstraction benchmarks and in \citet{marks2024geometry}'s curated sets. \citet{sahoo2026format} found that probes for reasoning modes detect task format and fall to chance once format variables are regressed out; \citet{devbunova2026format} found the same for evaluation awareness; \citet{sadhu2026compliance} found an activation readout matched by a bag-of-words model. \citet{petrov2026topic} showed that refusal directions \emph{built} from topic-matched contrasts are too small to steer, which is why we use matched sets only to evaluate directions.
+
+\paragraph{Random-direction controls.} Many steering papers compare with random directions of equal norm. Equal norm can be a weak control: in \citet{li2023iti}'s Table~3 a random direction changed the output distribution by a KL of 0.02 against 0.27 for the mass-mean shift at the same strength. SteerCheck \citep{luo2026steercheck} holds off-target KL in a fixed band for every confirmatory direction and finds that sign-randomised nulls built the same way as the direction keep substantial alignment with it; \citet{ferrara2026introspection} matches random controls on Jensen--Shannon divergence. We use KL matching as a standard and do not claim it as new.
+
+\paragraph{Where steering acts.} \citet{gao2026steering} show that common steering methods follow the answer-extraction index rather than the semantic label, through a low-rank output-sensitive component. \citet{yuan2026specificity} compare late-layer steering with a direct logit bias. Our Check~E2 is a fixed version of that comparison.
+
+\paragraph{Multi-claim audits.} \citet{wu2026steerable} audit four claim types over seventeen models and show that a scaling trend in steerability is an artefact of units and operating points. Their audit concerns static concepts; ours concerns process claims, adds per-item process targets and structured label-free competitors, and includes positive controls and a known-answer case that test the battery itself.
+
+\section{The battery}\label{sec:battery}
+
+\subsection{Definitions}
+A \emph{direction claim} is a tuple (model, layer $\ell^*$, reading position, vector $d$, process $X$, kind $\in$ \{tracks, drives\}). The \emph{calibration set} is the labelled prompts the authors used to build $d$, used unchanged. The \emph{process target} $T$ is a per-item number or binary outcome measured from the model's own behaviour or internals on that item (whether it refused, whether its answer settled late, whether its next sentence backtracks); it is never the label of the prompt's class. The \emph{projection} is $P = h_{\ell^*}(x)\cdot\dhat$ at the authors' reading position. The \emph{gap} $g$ is the mean projection of the positive calibration class minus that of the negative class; it is the unit of push size. A \emph{push} adds $\alpha\dhat$ to the output of block $\ell^*$ at every position from the reading position on, including generated tokens. Its \emph{size} is the KL from the clean to the pushed next-token distribution, summed over every position of the clean continuation under teacher forcing.
+
+\subsection{Control directions}
+For every (direction, model) pair we build, from the direction's own calibration set:
+\begin{itemize}
+\item $N_\text{len}$, the within-class length direction: in each class, the mean activation of the longer half of the calibration prompts minus that of the shorter half, averaged over classes;
+\item $N_\text{pc1}$, the first principal component of the calibration activations after centring each class on its own mean, signed to project positively on $d$;
+\item $N_\text{perm}$, twenty label-permuted difference-of-means directions;
+\item the oracle $o$, the difference of means between the top and bottom terciles of $T$ on an oracle split disjoint from every test item;
+\item twelve Gaussian random directions per model, pushed over a norm grid that brackets the KL of every tested push.
+\end{itemize}
+$N_\text{len}$ and $N_\text{pc1}$ are the label-free competitors of Check~C. The oracle answers one question: can this target be read and pushed linearly at $\ell^*$ at all? If it cannot, the direction's own failure is uninformative.
+
+\subsection{Checks}
+A check is \emph{passed} when the 95\% CI excludes zero in the claimed sign and the point estimate reaches the smallest effect size of interest (SESOI). It is \emph{failed} when the CI bound on the claimed side falls short of the SESOI. Otherwise it is inconclusive. CIs come from an item bootstrap with 2,000 resamples; Check~D uses a two-level bootstrap over items and random directions.
+
+\begin{description}[leftmargin=1.2em,style=nextline]
+\item[Check 0 (reproduction and randomised-model calibration).] 0a rebuilds the direction with the authors' code, data, layer rule and reading position, and reproduces their headline effect within a tolerance fixed after the pilot; a direction that fails is \verdict{NOT REPRODUCED} and leaves the test. 0b applies the same recipe to a copy of the model with re-initialised weights and reports how well that direction separates held-out calibration prompts (descriptive; it enters only H3).
+\item[Check A (tracking).] Spearman $\rho(P,T)$, or the AUC of $P$ for a binary $T$, on a process test set in one template and answer format. SESOI $\rho = 0.20$ or AUC $= 0.60$. If $T$ correlates with prompt length ($|\rho| > 0.1$), the partial statistic is primary.
+\item[Check B (label survives matching).] The AUC of $P$ for the class label on a set matched for template, token length and vocabulary, accepted only if a bag-of-tokens classifier separates it at AUC $\le 0.65$. Pass: AUC $\ge 0.70$ with CI lower bound above 0.5. B gives a separate \emph{label} verdict.
+\item[Check C (beats label-free directions).] Paired bootstrap differences $\rho_d - \rho_N$ (tracking) and $\text{effect}_d - \text{effect}_N$ at matched KL (steering), for $N \in \{N_\text{len}, N_\text{pc1}\}$. Pass: $d$ beats both. A \verdict{NUISANCE} flag is raised when a nuisance direction on its own meets the pass criterion of A or D and $d$ does not beat it.
+\item[Check D (steers beyond matched random pushes).] A push of $\pm 1\,g$. For each item and random direction, the change in $T$ is interpolated linearly in log KL between the two random norms that bracket the push's KL; the effect is the mean over items of the push's change minus the random reference. The same effect is computed against the label-permuted directions. Pass: against both references, the CI excludes zero in the claimed direction and the estimate reaches the target's SESOI. The effect against random directions of the push's norm, without KL matching, is reported for H4.
+\item[Check E (effect handed on).] Run only for pushes that pass D. E1 re-imposes the clean component along $\dhat$ at each later block and finds the hand-off layer, the first at which at least half the effect survives. E2 adds the push only at the last block, at the same KL. Pass: hand-off before the last quarter of the remaining depth and E2 recovering less than half the effect. Otherwise the push is flagged \verdict{OUTPUT-BIAS}.
+\end{description}
+
+\subsection{Verdicts}
+Each (direction, model) pair gets the first verdict that applies: \verdict{NOT REPRODUCED} (0a fails); \verdict{TARGET NOT LINEAR} (the oracle fails A, or D for a drive claim); \verdict{NUISANCE}; \verdict{FORMAT-MEDIATED} or \verdict{OUTPUT-BIAS}; \verdict{VALID TRACKER} (passes A and C-tracking); \verdict{VALID DRIVER} (passes every check its claim requires); \verdict{NOT SPECIFIC} (passes A or D, C inconclusive); \verdict{NOT SHOWN}. A direction's overall verdict is the one it receives in at least two of its three panel models, otherwise \verdict{MIXED}. No correction is made across models or directions; all CIs are reported.
+
+\subsection{Hypotheses}
+\begin{description}[leftmargin=1.2em,style=nextline]
+\item[H1 (positive control).] Refusal receives \verdict{VALID DRIVER} in at least two of three models. If it fails, the failing checks are declared miscalibrated and verdicts are recomputed without them.
+\item[H2 (negative control).] Label-permuted directions fail A and D in every model (an implementation check).
+\item[H3 (Adebayo analogue).] For at least half of the directions, the recipe applied to a weight-randomised model separates held-out calibration prompts at AUC $\ge 0.80$.
+\item[H4.] Effects measured against norm-matched random directions exceed effects against KL-matched ones.
+\item[H5.] Fewer than half of the process directions receive an overall \verdict{VALID TRACKER} or \verdict{VALID DRIVER}.
+\item[H6.] At least two process directions receive \verdict{NUISANCE} in at least one model.
+\item[H7 (retrodiction).] The battery reproduces paper~4's conclusions for the CR axis.
+\end{description}
+
+\section{Directions, models and procedure}\label{sec:directions}
+
+\begin{table}[t]
+\centering\small
+\caption{Directions under test. Chat panel: Qwen2.5-7B-Instruct, Qwen3-8B (thinking off), OLMo-2-1124-7B-Instruct. Reasoning panel: DeepSeek-R1-Distill-Qwen-7B, DeepSeek-R1-Distill-Llama-8B, Qwen3-8B (thinking on). D10 (test awareness, \citealp{abdelnabi2025testawareness}) was preregistered as secondary and was not run.}
+\label{tab:directions}
+\begin{tabularx}{\linewidth}{@{}l l X l@{}}
+\toprule
+ID & Direction & Process target $T$ (per item) & Panel \\
+\midrule
+D1 & Refusal \citep{arditi2024refusal} & the completion refuses (phrase list) & chat \\
+D2 & Truth, mass-mean \citep{marks2024geometry} & the model's own true/false verdict & chat \\
+D3 & CR axis \citep{ramdan2026crv1} & logit-lens settling depth of the answer & chat \\
+D4 & LiReFs \citep{hong2025lirefs} & settling depth (D3's items); chain-of-thought necessity (GSM8K) & chat \\
+D5 & Backtracking \citep{ward2025backtracking} & the model's next sentence backtracks (keyword list) & reasoning \\
+D6 & Reasoning strength \citep{sheng2025strength} & the model's own thinking length & reasoning \\
+D7 & Known-entity awareness \citep{ferrando2025entities} & the attribute is actually recalled & chat \\
+D8 & Sycophancy persona \citep{chen2025persona} & the answer flips to the user's stated wrong option & chat \\
+D9 & True thinking \citep{zhao2025truethinking} & the step's True Thinking Score & reasoning \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Table~\ref{tab:directions} lists the directions. Each was rebuilt in each panel model with its authors' code, calibration data, layer rule and reading position, adapted where a rule did not port (the adaptations are listed per direction in the Stage~2 documents). Gated models were not used, so Llama and Gemma home models are replaced by the chat panel. All models run in bf16 with their chat templates on one RTX~5090.
+
+\paragraph{Preregistration.} Stage~1 (the battery, pass criteria, verdict rules, SESOIs, process targets and hypotheses) was frozen on 14~October~2026 before any code was written. Stage~2 fixed per-direction settings (norm grids, item counts, generation lengths, matched-set constructions, judge choice and Check~0a tolerances) after pilots on Qwen3-1.7B with separate items, and was frozen in parts: D1--D3 on 14~October, and D4--D9 on 15~October (D5 at 01:03, D4 at 12:12, D8 at 16:19, D7 at 17:53, D6 at 19:15 and D9 at 19:35), each before its main runs. Every document is hashed, and every departure is listed in Appendix~\ref{app:deviations}.
+
+\paragraph{Judges.} Two targets were to be scored by a Qwen3-8B judge: refusal and backtracking. Each judge was validated against blind labels on 50 pilot outputs and was to be used only at Cohen's $\kappa \ge 0.7$. The refusal judge reached 0.52 and the backtracking judge 0.64, so the authors' phrase lists are the primary measures, as Stage~1 requires; judge-based results are reported as secondary.
+
+\section{Results}\label{sec:results}
+
+\subsection{Controls: refusal and truth}
+
+\paragraph{Refusal (D1).} The refusal direction, rebuilt with \citet{arditi2024refusal}'s selection pipeline in each model, predicts which prompts the model actually refuses, including benign prompts that look harmful (AUC 0.92 to 0.99). It beats both label-free directions and moves refusal by 20 to 87 points beyond random pushes of the same output change. In Qwen2.5-7B-Instruct and Qwen3-8B the effect is carried by later layers, and the verdict is \verdict{VALID DRIVER}: the positive control passes, so H1 is supported. In OLMo-2 the direction selected at block 23 of 32 acts like an output bias: re-imposing its clean component at any later block cancels the effect, and a push at the last block alone reproduces 94 to 98\% of it (\verdict{OUTPUT-BIAS}). With the judge's labels instead of phrase matching, every model still tracks (AUC 0.93 to 0.99) and steers in both directions. No vocabulary-matched harmful/harmless set passed the leakage test (XSTest's contrast pairs: bag-of-words AUC 0.75), so the label check is not evaluable for refusal.
+
+\paragraph{Truth (D2).} \citet{marks2024geometry}'s mass-mean direction, built from city statements, tracks the model's own true/false verdict on held-out statements in all three models ($\rho$ 0.63 to 0.80) and beats both label-free directions, which do not track it. It separates true from false statements perfectly on a matched set (``$X$ is larger than $Y$'' against ``$X$ is smaller than $Y$'' over the same numbers; bag-of-words AUC 0.46). Pushing it moves verdicts by 22 to 29 points beyond matched random pushes in Qwen2.5-7B-Instruct and OLMo-2 (\verdict{VALID DRIVER}). In Qwen3-8B a one-gap push moves verdicts by at most 3 points although an oracle at the same layer does steer them: there the direction tracks but does not drive (\verdict{VALID TRACKER}).
+
+\subsection{Known-answer case: the CR axis (D3, H7)}
+As in paper~4, the CR axis does not track settling depth in Qwen2.5-7B-Instruct or Qwen3-8B ($\rho$ $+0.03$ and $+0.07$, both CIs include 0), and pushing it moves settling depth by less than one layer beyond matched random pushes. In OLMo-2 it does track ($\rho$ $+0.30$), but $N_\text{len}$ and $N_\text{pc1}$ track better ($+0.43$, $+0.41$). What the push moves is reply format: whether the model shows working, by 21 to 52 points. The verdict is \verdict{TARGET NOT LINEAR} in all three models, because even the oracle cannot push settling depth at that layer. H7 is therefore only partly retrodicted: the tracking and driving failures reproduce paper~4, but the verdict is not the predicted \verdict{NUISANCE} or \verdict{NOT SHOWN}, and in Qwen2.5-7B-Instruct the push toward ``compute'' raises shown working 14 points more than the length direction does.
+
+\subsection{Process directions}
+
+\paragraph{LiReFs (D4).} \citet{hong2025lirefs}'s reasoning-versus-memorisation direction was rebuilt with their layer sweep, which scales the component along each layer's candidate direction and keeps the layer that most improves chain-of-thought accuracy on MMLU-Pro reasoning questions \citep{wang2024mmlupro}. The rebuilt direction separates reasoning from recall questions (two-fold AUC 0.97, 0.98 and 0.91 in Qwen2.5-7B-Instruct, Qwen3-8B and OLMo-2), which passes the preregistered gate, but the authors' intervention at the selected layer does not improve held-out reasoning accuracy in any model (20.7\% to 20.7\%, 42.5\% to 40.2\%, 26.4\% to 19.5\%). In Qwen3-8B and OLMo-2 the sweep selects block 6, where a weight-randomised copy separates the classes about as well as the trained model (AUC 0.88 against 0.98; 0.92 against 0.91).
+
+Because ``reasoning versus recall'' is the claim of the CR axis too, D4 was tested on D3's items. On paper~4's format-matched products, the direction tracks settling depth weakly in Qwen2.5-7B-Instruct ($\rho$ $+0.19$ [$+0.06$, $+0.32$], short of the SESOI) and less well than $N_\text{len}$ ($+0.31$ [$+0.18$, $+0.43$], close to paper~4's $+0.32$), and not in Qwen3-8B ($-0.08$ [$-0.21$, $+0.04$]) or OLMo-2 ($+0.10$ [$-0.03$, $+0.22$]). A one-gap push moves settling depth by a small fraction of a layer in every model, against the claimed sign in Qwen2.5-7B-Instruct and Qwen3-8B. It moves reply format instead, in opposite directions: the rate of shown working rises by 13 points beyond matched random pushes in Qwen2.5-7B-Instruct (24 beyond label-permuted ones) and falls by 20 points in OLMo-2. A second, independently published reasoning direction thus reproduces the CR axis's pattern: it moves the format of the reply, not the depth of the computation. On GSM8K \citep{cobbe2021gsm8k}, where chain of thought raises accuracy by 59 to 66 points on average, the projection does not follow how much it helps on each problem in any model ($\rho$ $+0.02$, $-0.04$, $-0.06$), and a push changes direct-answer accuracy by less than the 10-point SESOI, with CIs that exclude it. The oracle tracks settling depth in every model but cannot push it, and in Qwen3-8B it cannot read chain-of-thought necessity at block 6 at all, so the verdict on both item sets is \verdict{TARGET NOT LINEAR} in all three models.
+
+\paragraph{Backtracking (D5).} \citet{ward2025backtracking}'s backtracking direction, rebuilt from their annotated chains, was tested against whether each sentence of the model's own chain backtracks. With the preregistered measure, the authors' keywords ``Wait'' and ``Hmm'', it does not track (AUC 0.47 to 0.54 over about 11,000 sentences per model), and a one-gap push barely moves the keyword rate. At the authors' own strength, about eight gaps, it steers: 4.7 to 12 more backtracking sentences per 1,000 tokens beyond matched random pushes. With the judge, which agreed better with blind labels than the keywords did ($\kappa$ 0.64 against 0.54) but missed the preregistered bar, the same vector tracks judged backtracking in all three models (AUC 0.73, 0.69, 0.70; CIs above 0.66) and beats the length direction (0.61 to 0.63). A one-gap push also moves judged backtracking beyond both random references in R1-Distill-Llama-8B and in Qwen3-8B, where $-d$ removes 1.7 judged backtracking sentences per 1,000 tokens [$-2.4$, $-1.1$]; in R1-Distill-Qwen-7B the effect is inconclusive. The two measures agree on 88 to 92\% of sentences, and the disagreements decide the result. By the preregistered rules the verdict is \verdict{TARGET NOT LINEAR} (and \verdict{NOT REPRODUCED} in R1-Distill-Llama-8B, where the rebuilt vector's cosine with the released one was 0.79 against a gate of 0.80). Label-permuted directions are nearly orthogonal to this vector ($|\cos| \le 0.33$) and neither track nor steer.
+
+\paragraph{Reasoning strength (D6).} \citet{sheng2025strength}'s reasoning-strength direction is a difference of means between MATH \citep{hendrycks2021math} problems of higher and lower difficulty at the last prompt token, which they report the model uses to plan how long to think. It was rebuilt from their calibration file with their layer rule and tested against the model's own thinking length (tokens before \texttt{</think>}, four samples per problem, capped at 4,096). In R1-Distill-Qwen-7B, their home model, their every-layer steering reproduces strongly, and the direction tracks thinking length (partial $\rho$ $+0.45$ [$+0.33$, $+0.55$], controlling for difficulty level, subject and question length). A one-gap $-d$ push shortens thinking by 272 tokens beyond matched random pushes [$-372$, $-178$] against a SESOI of 206, and the effect is handed on to later layers. But the label-free directions do as well on both halves: $N_\text{len}$ tracks at $+0.47$ and $N_\text{pc1}$ at $+0.46$, and they steer thinking length as much at matched KL. The direction is nearly the same vector as $N_\text{pc1}$ ($\cos = 0.95$). The verdict is \verdict{NUISANCE}, the first in the study. In R1-Distill-Llama-8B, their steering at the strength they give for that model does not change thinking length by the preregistered 10\% (\verdict{NOT REPRODUCED}), and neither does it in Qwen3-8B with thinking on, so the overall verdict is \verdict{NOT REPRODUCED}. Where the direction does reproduce, it is a length direction.
+
+\paragraph{Known-entity awareness (D7).} \citet{ferrando2025entities} found sparse-autoencoder latents in Gemma-2 that separate entities the model knows from entities it does not, and showed that steering with the unknown-entity latent makes the model refuse to answer about entities it knows. Gemma is gated, so the direction was rebuilt in the chat panel as the difference-of-means analogue of their latents: per-model known and unknown labels from the model's own accuracy on attribute questions (their labelling rule), averaged within entity type, at the layer with the best minimum-over-types held-out separation. It separates known from unknown entities (minimum over types 0.81 to 0.90), but their headline steering result does not reproduce: pushing the unknown-entity direction on known entities leaves refusal at 8\%, 0\% and 10\% (from 4\%, 4\% and 6\%; random pushes of the same size 14\%, 4\% and 5\%). By the preregistered gate the verdict is \verdict{NOT REPRODUCED} in all three models.
+
+The later checks, reported as specified, are the strongest of any process direction. The projection tracks whether the model actually recalls the asked attribute in every model (AUC 0.68 [0.59, 0.76], 0.66 [0.58, 0.75], 0.77 [0.69, 0.84]) and beats both label-free directions; the known/unknown label survives matching on pairs matched for token count and entity type (AUC 0.86 to 0.90, bag-of-words 0.42 to 0.53). In Qwen2.5-7B-Instruct a one-gap push raises hallucination on unknown entities by 13 points beyond matched random pushes [6, 21], beats both label-free directions at matched KL, and is handed on to later layers (hand-off at block 16 of 28; a last-block push recovers 34\% of the effect). In Qwen3-8B and OLMo-2 the push effect is inconclusive (8 and 10 points, CIs from 2 to 20) and the oracle cannot push recall. Had the gate passed, the verdicts would have been \verdict{VALID DRIVER} in Qwen2.5-7B-Instruct and \verdict{TARGET NOT LINEAR} in the other two models. The direction follows the process it is named after, and can push the model toward confabulation; it does not produce the refusal behaviour it was published for, outside its Gemma home model and in its difference-of-means form.
+
+\paragraph{Sycophancy persona vector (D8).} \citet{chen2025persona}'s sycophancy vector was rebuilt with their extraction recipe (contrastive system prompts, judge-filtered responses, response-averaged difference of means at their relative depth), with a local judge in place of their API judge and ten rather than a hundred samples per question. It reproduces their steering result in every model: adding twice the vector raises judged sycophancy on their evaluation questions from 27 to 91, 57 to 99 and 25 to 88 (coherence 81, 35 and 63 under steering).
+
+The process target asks what sycophancy means for an answer: does the model abandon an answer it gets right without the user's belief for the wrong option the user says they believe? On ARC questions \citep{clark2018arc} with the answer prefilled to a letter, flips are rare in the Qwen models (17 of 1,906 and 42 of 1,931 correctly answered questions) and common in OLMo-2 (508 of 1,540). The projection at the last prompt token tracks flips in Qwen2.5-7B-Instruct (AUC 0.72 [0.62, 0.83] over 14 Check~A flips), and beats both label-free directions there. It does not track them in Qwen3-8B (0.47 [0.35, 0.58]) or in OLMo-2 (0.47 [0.44, 0.50]), where the number of flips leaves little room for doubt. An oracle built from flips tracks them well in every model (AUC 0.98, 0.77, 0.87), so giving in is linearly readable at the vector's layer, just not along the vector. Neither the vector nor the oracle moves the flip rate by more than 2.4 points with a one-gap push in either sign, so the verdict is \verdict{TARGET NOT LINEAR} in all three models. On the matched set (the same belief sentence naming the correct option or a wrong one; bag-of-words AUC 0.37), the vector is higher when the user is right (AUC 0.10, 0.18, 0.36, all \verdict{REVERSED}). It behaves more like agreement with the user than like pressure to give in: the persona vector steers a sycophantic style of reply, which is what its authors' evaluation measures, but it is not shown to carry the decision to give up a correct answer.
+
+\paragraph{True thinking (D9).} \citet{zhao2025truethinking} score each step of a chain of thought by its causal effect on the final answer (the True Thinking Score, TTS) and report a direction that separates steps the model actually uses from decorative ones; pushing it makes perturbed steps decide the answer more or less often. No step labels are released, so each model's direction was rebuilt from its own AMC chains with TTS recomputed by their procedure, and tested against the TTS of every numeric step in 240 held-out MATH chains per model. In R1-Distill-Qwen-7B the rebuilt vector's cosine with their released vector is 0.48, just under the preregistered 0.50, although the authors' engagement test passes (+8 points over random vectors), so the verdict is \verdict{NOT REPRODUCED}. In R1-Distill-Llama-8B (cosine 0.58) and Qwen3-8B (no released vector) the gate passes. In all three models the direction tracks which steps matter (partial $\rho$ $+0.37$ [$+0.33$, $+0.41$], $+0.29$ [$+0.25$, $+0.34$], $+0.37$ [$+0.33$, $+0.41$]) and beats both label-free directions in two of them; in R1-Distill-Llama-8B the within-class first component tracks as well ($+0.32$). A one-gap push does not change whether the answer follows a perturbed step beyond matched random pushes (CIs within $\pm 8$ points in the first two models), and in Qwen3-8B a $+d$ push makes the answer follow the perturbed step 24 points \emph{less} often, against the claimed sign. The oracle cannot push the target in any model, so the verdict is \verdict{TARGET NOT LINEAR} overall. The matched step sets leaked in two models (bag-of-words AUC 0.76 and 0.79); in R1-Distill-Qwen-7B, where the set was accepted, the label survives matching (AUC 0.93).
+
+\begin{table}[t]
+\centering\small
+\caption{Process verdicts per direction and model, by the preregistered rules. Overall: the verdict in at least two of three models. Columns follow each direction's panel order (Table~\ref{tab:directions}); for D5 the home model is R1-Distill-Llama-8B, for D6 and D9 R1-Distill-Qwen-7B. TNL = target not linear; NR = not reproduced. Tracks: models in which the direction passes Check~A and beats both label-free directions (Check~C), whatever the verdict; D6's two unreproduced models stopped after calibration.}
+\label{tab:verdicts}
+\begin{tabular}{@{}l l l l l c@{}}
+\toprule
+Direction & Model 1 & Model 2 & Model 3 & Overall & Tracks \\
+\midrule
+D1 Refusal & valid driver & valid driver & output bias & valid driver & 3/3 \\
+D2 Truth & valid driver & valid tracker & valid driver & valid driver & 3/3 \\
+D3 CR axis & TNL & TNL & TNL & TNL & 0/3 \\
+D4 LiReFs (paper~4 items) & TNL & TNL & TNL & TNL & 0/3 \\
+D4 LiReFs (GSM8K) & TNL & TNL & TNL & TNL & 0/3 \\
+D5 Backtracking & NR & TNL & TNL & TNL & 0/3 \\
+D6 Reasoning strength & nuisance & NR & NR & NR & 0/1 \\
+D7 Known-entity awareness & NR & NR & NR & NR & \textbf{3/3} \\
+D8 Sycophancy persona & TNL & TNL & TNL & TNL & 1/3 \\
+D9 True thinking & NR & TNL & TNL & TNL & \textbf{2/3} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:verdicts} collects the verdicts. Table~\ref{tab:checks} shows what lies behind them for the process directions: the published direction tracks its process in 8 of 21 process runs and beats both label-free directions in 6, but drives it in only 2, and the oracle, which reads the process in 17 of the 19 runs where it was built, drives it in none.
+
+\begin{table}[t]
+\centering\small
+\caption{Check outcomes behind the verdicts, over the 21 process-direction runs (D4 on both item sets, D5--D9; D6's two unreproduced models stopped after calibration) and the 6 control runs. ``Pass'' as defined in Section~\ref{sec:battery}.}
+\label{tab:checks}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+ & Process runs & Control runs \\
+\midrule
+Direction tracks the process (A) & 8 / 19 & 6 / 6 \\
+\quad and beats both label-free directions (C) & 6 / 19 & 6 / 6 \\
+Direction drives the process (D) & 2 / 19 & 5 / 6 \\
+Oracle reads the process (A) & 17 / 19 & 6 / 6 \\
+Oracle drives the process (D) & 0 / 19 & 6 / 6 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Exploratory: push strength}\label{sec:strength}
+The preregistered pushes are one calibration gap, so \verdict{TARGET NOT LINEAR} says that the target cannot be pushed linearly at the published layer \emph{at that strength}. Two exploratory analyses (Stage~1 \S9; not part of any verdict) ask what larger pushes do. First, every main run already pushed $d$, the label-free directions and the oracle at 0.5 and 2 gaps; we computed their matched-KL effects with the preregistered analysis code. Second, for D3, D4, D4G and D8 we pushed $d$ and the oracle at 4 and 8 gaps on the first 80 Check~D items, with the run's own oracle and Gaussian reference directions and the random grid extended to 24 gaps so that every push is bracketed in KL. A target counts as moved when the effect against matched Gaussian pushes reaches the SESOI with its CI excluding zero in the claimed sign (the permuted reference was not rerun).
+
+\begin{table}[t]
+\centering\small
+\caption{Exploratory: the strongest push at which the oracle moves its target beyond matched-KL Gaussian pushes (``--'': at no strength tested). Strengths up to 2 gaps come from the main runs; 4 and 8 gaps from the additional sweep (D3, D4, D4G, D8 only). OLMo-2's replies to paper~4's items broke down above 2 gaps, so its D3 sweep is not evaluable.}
+\label{tab:strength}
+\begin{tabular}{@{}l l c c c@{}}
+\toprule
+Target & Kind & Model 1 & Model 2 & Model 3 \\
+\midrule
+Refusal (D1), true/false verdict (D2) & decision & 0.5 & 0.5 & 0.5 \\
+Hallucination on unknown entities (D7) & answer choice & 2 & -- (2) & -- (2) \\
+Flip to the user's wrong option (D8) & answer choice & 2 & 4 & 8 \\
+Answer follows a perturbed step (D9) & answer choice & 2 & 2 & -- (2) \\
+Settling depth (D3) & course of computation & -- (8) & 4 & n.e. \\
+Settling depth (D4) & course of computation & -- (8) & -- (8) & -- (8) \\
+Chain-of-thought necessity (D4G) & course of computation & -- (8) & -- (8) & -- (8) \\
+Backtracking (D5) & course of computation & -- (2) & -- (2) & -- (2) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:strength} separates the targets. Decisions that are themselves the output (refuse or not; true or false) move at half a gap. Targets that are a choice of answer move once the push is two to eight times stronger: in six of the nine runs, the oracle raises hallucination, giving in to the user, or reliance on a perturbed step beyond matched random pushes, for example by 59 points of flips at four gaps in Qwen2.5-7B-Instruct [47, 70]. Targets that describe the course of the computation hardly move at all: settling depth, chain-of-thought necessity and backtracking move in one of twelve runs (Qwen3-8B's settling depth at four gaps, $-0.055$ of depth, at a KL of about 80), although the pushes change the output distribution by KLs of up to 200. The published directions themselves, pushed at four and eight gaps, move their target in that same run only (the CR axis, $-0.033$ of depth at four gaps); in particular, the sycophancy vector does not move flips at any strength at which the oracle does.
+
+\subsection{Hypotheses}
+\begin{table}[t]
+\centering\small
+\caption{Preregistered hypotheses and outcomes.}
+\label{tab:hyp}
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\toprule
+ & Prediction & Outcome \\
+\midrule
+H1 & Refusal is \verdict{VALID DRIVER} in at least two of three models. & Supported (Qwen2.5-7B-Instruct, Qwen3-8B; output bias in OLMo-2). \\
+H2 & Label-permuted directions fail A and D in every model. & Not supported. Where the labelled contrast dominates the calibration variance they keep much of the real direction ($|\cos|$ up to 0.95) and many pass A; only D5's are clean nulls. \\
+H3 & For at least half the directions, a weight-randomised model separates held-out calibration prompts at AUC $\ge 0.80$. & Not supported: 4 of 9 (refusal, CR axis, LiReFs, sycophancy). \\
+H4 & Norm-matched effects exceed KL-matched effects. & Supported: $+0.25$ [$+0.07$, $+0.49$] SESOI over 23 reproduced pairs. \\
+H5 & Fewer than half the process directions are valid overall. & Supported: 0 of 6. \\
+H6 & At least two process directions receive \verdict{NUISANCE} in some model. & Not supported: 1 (D6 in R1-Distill-Qwen-7B). \\
+H7 & The battery retrodicts paper~4 for the CR axis. & Partly: tracking and driving fail as in paper~4, but the verdict is \verdict{TARGET NOT LINEAR}, not the predicted \verdict{NUISANCE} or \verdict{NOT SHOWN}. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Table~\ref{tab:hyp} gives the outcomes. H6's prediction fails partly because of the verdict order: the length or first-component direction matches or beats the published direction at tracking in four further runs (the CR axis in two models, LiReFs in Qwen2.5-7B-Instruct, true thinking in R1-Distill-Llama-8B), but each of those verdicts is pre-empted by \verdict{TARGET NOT LINEAR}.
+
+\section{Discussion}\label{sec:discussion}
+
+\paragraph{Readable everywhere, pushable only near the output.} The most common verdict is not a failure of the published direction but a property of the target. At the preregistered strength the oracle reads every process target at the published layer in almost every model and steers none of them, while for refusal and truth it steers in every model. The exploratory strength analysis (Table~\ref{tab:strength}) shows that this is a gradient rather than a wall. Targets that are a choice of answer (whether to hallucinate, to give in, to follow a perturbed step) become pushable along the oracle at two to eight gaps. Targets that describe how the computation unfolds (how deep the answer settles, whether chain of thought is needed, whether the next sentence backtracks) stay put in eleven of twelve runs even at pushes that change the output distribution by KLs above 100, and the published directions move them in that one run only. The authors' own strength can matter: at about eight gaps the backtracking direction raises the keyword rate beyond matched random pushes, where one gap does not. A plausible reading is that a single residual direction can bias what the model says, but not how it gets there; the course of a computation may be carried by non-linear or distributed features that one additive push does not reach. Either way, a demonstration that a direction ``steers reasoning'' at one strength and layer is not evidence that the process it reads is linearly controllable there.
+
+\paragraph{Tracking survives where steering does not.} Two directions that fail their reproduction gate, known-entity awareness and true thinking, are the best trackers in the study: in every panel model they follow the process on the model's own items and beat both label-free directions, and the known/unknown label survives matching. Their authors' reproduction headlines are about steering (refusal on known entities; perturbed steps deciding the answer), and those are what fail. The converse also holds: refusal and truth, whose headline is steering, steer. Reproduction of a steering demonstration and validity as a tracker are separate questions, and the battery shows they come apart in both directions.
+
+\paragraph{What the push moves instead.} Where a reasoning direction moves anything, it moves the form of the reply. LiReFs, like the CR axis before it, changes whether the model shows working in Qwen2.5-7B-Instruct and OLMo-2, in opposite signs, while leaving settling depth unchanged. The sycophancy persona vector reliably makes replies sycophantic in style, which is what its authors measure, but it is higher when the user is right than when the user is wrong and does not change whether the model gives up a correct answer. Reasoning strength, where it reproduces, is a length direction. In each case a style or format variable that co-varies with the calibration contrast is a better description than the process in the direction's name.
+
+\paragraph{Label-permuted directions are not a clean null.} Where the labelled contrast dominates the calibration activations' variance, as for refusal, truth, the CR axis and the sycophancy vector, a random relabelling keeps much of the real direction ($|\cos|$ up to 0.95), and many permuted directions track the outcome. This is SteerCheck's alignment leakage \citep{luo2026steercheck} in a second setting. Where the contrast is small relative to other variance, as for backtracking, the permuted directions are nearly orthogonal and behave as intended. KL-matched Gaussian directions are the more reliable reference.
+
+\paragraph{The measurement of the process decides the verdict.} For backtracking, two measures that agree on about nine sentences in ten give opposite tracking verdicts: the authors' keywords count ``Hmm, let me break this down'' and miss re-checks without those words. For sycophancy, flips are so rare in the Qwen models that tracking rests on 14 and 36 positive items, and the model with many flips gives the clearest answer. A process target is a measurement, and its validity, base rate and power have to be established like the direction's.
+
+\paragraph{Limitations.} Both preregistered judges missed their validation bar, so refusal and backtracking rest on phrase lists that agreed only moderately with blind labels in the pilot. Gated home models were not used: D1, D2, D4 and D7 were tested on a chat panel rather than the models they were published on, and D7 only in a difference-of-means form, which may explain part of its reproduction failure. Several layer rules were adapted (D2, D7, D9), D6 and D9 cap generation length, and D8 uses a local judge and fewer extraction samples. One GPU set the budget: D6 uses the preregistered reduced design in two models, and D10 was not run. The verdicts are per model without correction across models or directions. The preregistered pushes were applied at one strength (one calibration gap) at the published layer, so ``target not linear'' is a statement about that layer and strength; the exploratory sweep reaches eight gaps for four directions and two gaps for the rest, uses the Gaussian reference only, and covers no other layers.
+
+\section{Conclusion}
+A preregistered battery that passes the refusal and truth controls finds no valid process direction among six published ones. The usual reason is not a spurious direction but a target that can be read and not pushed at the published layer: at larger strengths, choices of answer become pushable along an oracle, the course of the computation almost never does, and the published directions seldom move either. Behind the verdicts, two directions track their processes well in every model while failing their authors' steering headline, and the directions that do steer move style and format variables that ride along with the calibration contrast. Calibration separation, which weight-randomised models reproduce for four of nine directions, and fixed-norm steering demonstrations, which norm-matched baselines flatter, cannot tell these cases apart. Measuring the process per item, comparing with label-free directions from the same prompts, matching pushes on KL, and building an oracle from the target can. The code, data, preregistrations and per-run summaries are released so that the battery can be applied to other directions.
+
+\paragraph{Use of AI assistance.} The idea of packaging the series' checks as a battery and applying it to published directions is the author's. An AI system (Claude, Anthropic), working under the author's direction, reviewed the literature, wrote the preregistrations and code, ran the experiments and analyses, and drafted this paper. The preregistrations record that the author had not reviewed their details line by line when they were frozen. The author directed the work and is responsible for its content.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\section{Deviations from the preregistration}\label{app:deviations}
+Every departure from Stage~1 is listed here with its reason; the full text, with the numbering used in the release, is in the Stage~2 documents and \texttt{DEVIATIONS\_LOG.md}. Departures that change what is measured are marked $\ast$; the rest change cost, engineering or batching only.
+
+\paragraph{All directions.}
+\begin{itemize}
+\item $\ast$ Gated home models (Llama, Gemma) were not used; the chat panel replaces them (Stage~1 \S0.3, fixed before any code).
+\item $\ast$ Both preregistered judges failed validation (refusal $\kappa$ 0.52, backtracking 0.64), so the authors' phrase lists are primary, as Stage~1 specifies; judge results are secondary.
+\item D10 (test awareness), preregistered as secondary, was not run; by Stage~1 it then enters neither H5 nor H6.
+\item A performance-only patch was applied to the frozen Stage~2a code midway through D1, after OLMo-2's attention cache spilled into system memory. It changes floating-point reduction order only; OLMo-2's D1 push was restarted so that every item used one version.
+\item Pushes that ran out of GPU memory on long prompts (D4G in all three chat models, D8 in Qwen3-8B) were restarted from the first item in smaller row chunks (96, or 48 for OLMo-2), so that batch size stays fixed within each model's comparison. Partial files are kept and not analysed.
+\item Two output fields were added to the analysis summaries after the Stage~2b-D5 freeze; nothing computed changed.
+\end{itemize}
+
+\paragraph{D1--D3 (Stage 2a).} The backtracking pilot ran after, not before, the D1--D3 main runs, and on the RTX~5090 rather than the laptop. $\ast$ D2's layer rule is a substitute (best held-out mass-mean probe accuracy), because Marks \& Tegmark chose layers by patching. Arditi et al.'s selection pipeline was reimplemented rather than run from their repository. No matched set exists for D3 (Check~B not run); D1's was rejected for leakage.
+
+\paragraph{D4.} One fixed 200-question sample is used for every layer of the sweep (theirs draws anew per layer); the five-shot exemplars were refetched from MMLU-Pro's validation split. $\ast$ The GSM8K drive target is direct-answer accuracy, because pushing 384-token sampled chains on every reference row was not affordable. $\ast$ The Check~0a gate is on separation only, decided after the pilot showed their intervention lowering reasoning accuracy; the intervention's effect is reported.
+
+\paragraph{D5.} $\ast$ Ward et al.'s recipe and annotations are used in every panel model, where Stage~1 named Venhoff et al.'s recipe (which needs GPT-4o annotations) for the non-home models. The sentence splitter and the sentence-start token mapping were fixed in the pilot. Check~B is not constructed. The secondary judge pass over pushed outputs was first limited to the home model to free the GPU and then completed.
+
+\paragraph{D6.} $\ast$ Thinking is capped at 4,096 tokens (theirs 16,384); capped chains count at the cap. $\ast$ Random and permuted reference rows use one sample each rather than the four-sample mean, for cost. The preregistered long-generation reduction ($R = 8$, 5 norms, 80 items) is applied to R1-Distill-Llama-8B and Qwen3-8B. The layer is their code's single-layer index, not the layer named in their text. Sampling uses top-$p$ 0.95 as in their generation scripts. Models that fail the gate skip the later stages. D6 uses its own sampled-generation engine.
+
+\paragraph{D7.} $\ast$ The direction is the difference-of-means analogue of their SAE latents, averaged within entity type, with a substitute layer rule (best minimum-over-types held-out separation). Calibration uses a random 600 entities per type, labelled per model. $\ast$ The oracle is built within entity type, because the pooled oracle mostly encoded entity type. Check~D items come from a held-out pool selected per model by label, so that each model has known and unknown items; the drive target combines refusal on known and hallucination on unknown entities into one per-sign target.
+
+\paragraph{D8.} $\ast$ Ten samples per extraction question (theirs 100), 400 new tokens (theirs 1,000), and a local Qwen3-8B judge with their prompts (theirs gpt-4.1-mini); the judge is used only for the extraction filter and the Check~0a gate. $\ast$ The answer is prefilled with ``The answer is ('' after two free-answer pilots left up to a quarter of answers without a letter. $\ast$ The matched set names the correct or a wrong option in the same belief sentence, because ``with and without the belief'' cannot pass the leakage rule. Check~A was extended to every unused ARC item before the main runs.
+
+\paragraph{D9.} $\ast$ Every model's direction is rebuilt from its own chains with True Thinking Scores recomputed by the authors' procedure (no step labels are released); two bugs in their scoring code (a dropped delimiter, a double BOS token) are fixed, the decorative cut-off is $\mathrm{TTS} \le 0.005$ as in their paper, and confidence is teacher-forced. Chains are capped (8,192 tokens for calibration, 4,096 for test). Test problems are MATH Levels 1--3 with integer answers; Check~A uses numeric steps only. The layer is their released example's (17 of 28, same relative depth elsewhere). The engagement and disengagement tests used in the gate were written afresh, since the release does not include them.
+
+\end{document}

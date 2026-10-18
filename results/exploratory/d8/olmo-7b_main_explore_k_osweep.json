@@ -1,0 +1,242 @@
+{
+ "direction": "d8",
+ "model": "olmo-7b",
+ "phase": "main",
+ "target": "flip",
+ "sesoi": 0.1,
+ "exploratory": true,
+ "results": [
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": -1,
+   "n": 69,
+   "kl_median": 7.759220123291016,
+   "rand": {
+    "effect": 0.00011946563083980969,
+    "ci": [
+     -0.06278642873801683,
+     0.060167380206671055
+    ],
+    "ci_item_only": [
+     -0.048378895389469496,
+     0.047785955405703094
+    ],
+    "n": 69,
+    "n_excluded": 0,
+    "raw_dT": 0.028985507246376812,
+    "mean_ref": 0.02886604161553701
+   },
+   "perm": {
+    "n_excluded": 69,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": 1,
+   "n": 69,
+   "kl_median": 8.846254348754883,
+   "rand": {
+    "effect": -0.003518493521317762,
+    "ci": [
+     -0.06421196603178038,
+     0.05417710525426743
+    ],
+    "ci_item_only": [
+     -0.05000654063400082,
+     0.04353411050854154
+    ],
+    "n": 69,
+    "n_excluded": 0,
+    "raw_dT": 0.028985507246376812,
+    "mean_ref": 0.03250400076769459
+   },
+   "perm": {
+    "n_excluded": 69,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 8,
+   "sign": -1,
+   "n": 69,
+   "kl_median": 27.677433013916016,
+   "rand": {
+    "effect": 0.004674092195936743,
+    "ci": [
+     -0.07875219790953264,
+     0.09830446511406189
+    ],
+    "ci_item_only": [
+     -0.060660540751056626,
+     0.07802909228909274
+    ],
+    "n": 69,
+    "n_excluded": 0,
+    "raw_dT": -0.2028985507246377,
+    "mean_ref": -0.2075726429205744
+   },
+   "perm": {
+    "n_excluded": 69,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 8,
+   "sign": 1,
+   "n": 69,
+   "kl_median": 30.866939544677734,
+   "rand": {
+    "effect": 0.06670796525097282,
+    "ci": [
+     -0.019502653636696163,
+     0.15403009613078267
+    ],
+    "ci_item_only": [
+     -0.002785515795006271,
+     0.13963721239132296
+    ],
+    "n": 69,
+    "n_excluded": 0,
+    "raw_dT": -0.15942028985507245,
+    "mean_ref": -0.2261282551060453
+   },
+   "perm": {
+    "n_excluded": 69,
+    "n": 0
+   },
+   "verdict": "inconclusive",
+   "verdict_rand": "inconclusive",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 4,
+   "sign": -1,
+   "n": 69,
+   "kl_median": 21.305070877075195,
+   "rand": {
+    "effect": 0.02391262411770902,
+    "ci": [
+     -0.07199887316908632,
+     0.12287290147289069
+    ],
+    "ci_item_only": [
+     -0.055698996134339325,
+     0.11159901364191988
+    ],
+    "n": 69,
+    "n_excluded": 0,
+    "raw_dT": -0.14492753623188406,
+    "mean_ref": -0.16884016034959307
+   },
+   "perm": {
+    "n_excluded": 69,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 4,
+   "sign": 1,
+   "n": 69,
+   "kl_median": 8.285530090332031,
+   "rand": {
+    "effect": 0.04479070537849679,
+    "ci": [
+     -0.0700148973624898,
+     0.15552980608781294
+    ],
+    "ci_item_only": [
+     -0.06583086523657684,
+     0.15083357096136443
+    ],
+    "n": 69,
+    "n_excluded": 0,
+    "raw_dT": 0.08695652173913043,
+    "mean_ref": 0.04216581636063364
+   },
+   "perm": {
+    "n_excluded": 69,
+    "n": 0
+   },
+   "verdict": "inconclusive",
+   "verdict_rand": "inconclusive",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 8,
+   "sign": -1,
+   "n": 69,
+   "kl_median": 28.75653076171875,
+   "rand": {
+    "effect": 0.020102062489470596,
+    "ci": [
+     -0.05146098554617583,
+     0.10726681985442045
+    ],
+    "ci_item_only": [
+     -0.04235433762213684,
+     0.09585102184100487
+    ],
+    "n": 69,
+    "n_excluded": 0,
+    "raw_dT": -0.21739130434782608,
+    "mean_ref": -0.23749336683729672
+   },
+   "perm": {
+    "n_excluded": 69,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 8,
+   "sign": 1,
+   "n": 69,
+   "kl_median": 26.682018280029297,
+   "rand": {
+    "effect": 0.1506659867577909,
+    "ci": [
+     0.029108945751099725,
+     0.26786809185455923
+    ],
+    "ci_item_only": [
+     0.04949513307635287,
+     0.2532578859455425
+    ],
+    "n": 69,
+    "n_excluded": 0,
+    "raw_dT": -0.028985507246376812,
+    "mean_ref": -0.17965149400416772
+   },
+   "perm": {
+    "n_excluded": 69,
+    "n": 0
+   },
+   "verdict": "inconclusive",
+   "verdict_rand": "pass",
+   "verdict_perm": null
+  }
+ ]
+}

@@ -1,0 +1,213 @@
+{
+ "direction": "d4",
+ "model": "olmo-7b",
+ "phase": "main",
+ "target": "D",
+ "sesoi": 0.03125,
+ "exploratory": true,
+ "results": [
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": -1,
+   "n": 3,
+   "kl_median": 40.61065673828125,
+   "rand": {
+    "effect": 0.008423576481160343,
+    "ci": [
+     -0.011455600065784286,
+     0.03205848036147957
+    ],
+    "ci_item_only": [
+     -0.010637775752908432,
+     0.027607384201595687
+    ],
+    "n": 3,
+    "n_excluded": 0,
+    "raw_dT": 0.06770833333333333,
+    "mean_ref": 0.06437526692744218
+   },
+   "perm": {
+    "n_excluded": 3,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 6.711910009384155,
+   "rand": {
+    "effect": -0.02517031714744545,
+    "ci": [
+     -0.0396160674018211,
+     -0.011538346615803594
+    ],
+    "ci_item_only": [
+     -0.03750132275927527,
+     -0.014122074254020853
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": 0.012890625,
+    "mean_ref": 0.03753306449016632
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "reversal",
+   "verdict_rand": "reversal",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 8,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 18.283743858337402,
+   "rand": {
+    "effect": -0.03406570900254312,
+    "ci": [
+     -0.055187042621464684,
+     -0.011979471266224822
+    ],
+    "ci_item_only": [
+     -0.04813562888590446,
+     -0.020164117060714724
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": 0.015625,
+    "mean_ref": 0.051338974308435044
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "reversal",
+   "verdict_rand": "reversal",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 4,
+   "sign": -1,
+   "n": 80,
+   "kl_median": 1.2843403816223145,
+   "rand": {
+    "effect": -0.0025830334381202365,
+    "ci": [
+     -0.01536316157133619,
+     0.009291711611039009
+    ],
+    "ci_item_only": [
+     -0.013458428749106074,
+     0.007576561627152222
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": 0.01484375,
+    "mean_ref": 0.01776495232002068
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 4,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 0.3054700791835785,
+   "rand": {
+    "effect": -0.00834662007365387,
+    "ci": [
+     -0.016234145828910918,
+     -0.0009902029402091706
+    ],
+    "ci_item_only": [
+     -0.015487001510056326,
+     -0.001596422668191835
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": -0.00078125,
+    "mean_ref": 0.00797836165728568
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "reversal",
+   "verdict_rand": "reversal",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 8,
+   "sign": -1,
+   "n": 80,
+   "kl_median": 11.205816268920898,
+   "rand": {
+    "effect": -0.010836357235776242,
+    "ci": [
+     -0.03320694214482523,
+     0.008729807361926786
+    ],
+    "ci_item_only": [
+     -0.030428953997692538,
+     0.0049578635016080215
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": 0.030078125,
+    "mean_ref": 0.041114518702864214
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "inconclusive",
+   "verdict_rand": "inconclusive",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 8,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 12.565159320831299,
+   "rand": {
+    "effect": 0.011462791560497385,
+    "ci": [
+     -0.007711993437564015,
+     0.030765146084602745
+    ],
+    "ci_item_only": [
+     -0.001679451340917209,
+     0.024317467249517066
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": 0.055078125,
+    "mean_ref": 0.042603780777913575
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  }
+ ]
+}

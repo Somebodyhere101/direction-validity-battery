@@ -1,0 +1,7 @@
+# Paper 6 D7 pilot (Qwen3-1.7B, thinking off; pilot items only)
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run_d7.py label q3-1.7b pilot > logs\d7_q3-1.7b_label_pilot.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q3-1.7b cal pilot > logs\d7_q3-1.7b_cal_pilot.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q3-1.7b clean pilot > logs\d7_q3-1.7b_clean_pilot.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q3-1.7b push pilot > logs\d7_q3-1.7b_push_pilot.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run_d7.py lens q3-1.7b pilot > logs\d7_q3-1.7b_lens_pilot.log 2>&1
+paper6_d7 :: python analyze.py d7 q3-1.7b pilot > logs\d7_q3-1.7b_analyze_pilot.log 2>&1

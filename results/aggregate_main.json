@@ -1,0 +1,1256 @@
+{
+ "phase": "main",
+ "n_summaries": 30,
+ "per_model": {
+  "d1/q25-7b": {
+   "verdict": "VALID DRIVER",
+   "label": "NOT EVALUABLE (matched set rejected: text-only AUC > 0.65)",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "pass",
+    "D_key": "sub:+",
+    "C_steer": "pass",
+    "E": "pass",
+    "o_A": "pass",
+    "o_D": "pass"
+   },
+   "reproduced": true
+  },
+  "d1/q3-8b": {
+   "verdict": "VALID DRIVER",
+   "label": "NOT EVALUABLE (matched set rejected: text-only AUC > 0.65)",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "pass",
+    "D_key": "sub:-",
+    "C_steer": "pass",
+    "E": "pass",
+    "o_A": "pass",
+    "o_D": "pass"
+   },
+   "reproduced": true
+  },
+  "d1/olmo-7b": {
+   "verdict": "OUTPUT-BIAS",
+   "label": "NOT EVALUABLE (matched set rejected: text-only AUC > 0.65)",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "pass",
+    "D_key": "sub:-",
+    "C_steer": "pass",
+    "E": "output_bias",
+    "o_A": "pass",
+    "o_D": "pass"
+   },
+   "reproduced": true
+  },
+  "d2/q25-7b": {
+   "verdict": "VALID DRIVER",
+   "label": "LABEL SURVIVES MATCHING",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "pass",
+    "D_key": "V:-",
+    "C_steer": "pass",
+    "E": "pass",
+    "o_A": "pass",
+    "o_D": "pass"
+   },
+   "reproduced": true
+  },
+  "d2/q3-8b": {
+   "verdict": "VALID TRACKER",
+   "label": "LABEL SURVIVES MATCHING",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "pass"
+   },
+   "reproduced": true
+  },
+  "d2/olmo-7b": {
+   "verdict": "VALID DRIVER",
+   "label": "LABEL SURVIVES MATCHING",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "pass",
+    "D_key": "V:-",
+    "C_steer": "pass",
+    "E": "pass",
+    "o_A": "pass",
+    "o_D": "pass"
+   },
+   "reproduced": true
+  },
+  "d3/q25-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "nuisance",
+    "D": "reversal",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d3/q3-8b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d3/olmo-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "pass",
+    "C_track": "nuisance",
+    "D": "reversal",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d4/q25-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "inconclusive",
+    "C_track": "nuisance",
+    "D": "reversal",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d4/q3-8b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "reversal",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d4/olmo-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "inconclusive",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d4g/q25-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "inconclusive",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d4g/q3-8b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "fail",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d4g/olmo-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d5/r1-llama-8b": {
+   "verdict": "NOT REPRODUCED",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": false
+  },
+  "d5/r1-qwen-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d5/q3-8b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT RUN",
+   "statuses": {
+    "A": "fail",
+    "C_track": "pass",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d6/r1-qwen-7b": {
+   "verdict": "NUISANCE",
+   "label": "LABEL SURVIVES MATCHING",
+   "statuses": {
+    "A": "pass",
+    "C_track": "nuisance",
+    "D": "pass",
+    "D_key": "T:-",
+    "C_steer": "nuisance",
+    "E": "pass",
+    "o_A": "pass",
+    "o_D": "inconclusive"
+   },
+   "reproduced": true
+  },
+  "d6/r1-llama-8b": {
+   "verdict": "NOT REPRODUCED",
+   "label": null,
+   "statuses": null,
+   "reproduced": false
+  },
+  "d6/q3-8b": {
+   "verdict": "NOT REPRODUCED",
+   "label": null,
+   "statuses": null,
+   "reproduced": false
+  },
+  "d7/q25-7b": {
+   "verdict": "NOT REPRODUCED",
+   "label": "LABEL SURVIVES MATCHING",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "pass",
+    "D_key": "drv:+",
+    "C_steer": "pass",
+    "E": "pass",
+    "o_A": "pass",
+    "o_D": "inconclusive"
+   },
+   "reproduced": false
+  },
+  "d7/q3-8b": {
+   "verdict": "NOT REPRODUCED",
+   "label": "LABEL SURVIVES MATCHING",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "inconclusive",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": false
+  },
+  "d7/olmo-7b": {
+   "verdict": "NOT REPRODUCED",
+   "label": "LABEL SURVIVES MATCHING",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "inconclusive",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": false
+  },
+  "d8/q25-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "REVERSED",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d8/q3-8b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "REVERSED",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d8/olmo-7b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "REVERSED",
+   "statuses": {
+    "A": "fail",
+    "C_track": "inconclusive",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d9/r1-qwen-7b": {
+   "verdict": "NOT REPRODUCED",
+   "label": "LABEL SURVIVES MATCHING",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "inconclusive",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": false
+  },
+  "d9/r1-llama-8b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT EVALUABLE (matched set rejected: text-only AUC > 0.65)",
+   "statuses": {
+    "A": "pass",
+    "C_track": "nuisance",
+    "D": "fail",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  },
+  "d9/q3-8b": {
+   "verdict": "TARGET NOT LINEAR",
+   "label": "NOT EVALUABLE (matched set rejected: text-only AUC > 0.65)",
+   "statuses": {
+    "A": "pass",
+    "C_track": "pass",
+    "D": "reversal",
+    "D_key": null,
+    "C_steer": null,
+    "E": null,
+    "o_A": "pass",
+    "o_D": "fail"
+   },
+   "reproduced": true
+  }
+ },
+ "overall": {
+  "d1": {
+   "verdict": "VALID DRIVER",
+   "per_model": [
+    "VALID DRIVER",
+    "VALID DRIVER",
+    "OUTPUT-BIAS"
+   ]
+  },
+  "d2": {
+   "verdict": "VALID DRIVER",
+   "per_model": [
+    "VALID DRIVER",
+    "VALID TRACKER",
+    "VALID DRIVER"
+   ]
+  },
+  "d3": {
+   "verdict": "TARGET NOT LINEAR",
+   "per_model": [
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR"
+   ]
+  },
+  "d4": {
+   "verdict": "TARGET NOT LINEAR",
+   "per_model": [
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR"
+   ]
+  },
+  "d4g": {
+   "verdict": "TARGET NOT LINEAR",
+   "per_model": [
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR"
+   ]
+  },
+  "d5": {
+   "verdict": "TARGET NOT LINEAR",
+   "per_model": [
+    "NOT REPRODUCED",
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR"
+   ]
+  },
+  "d6": {
+   "verdict": "NOT REPRODUCED",
+   "per_model": [
+    "NUISANCE",
+    "NOT REPRODUCED",
+    "NOT REPRODUCED"
+   ]
+  },
+  "d7": {
+   "verdict": "NOT REPRODUCED",
+   "per_model": [
+    "NOT REPRODUCED",
+    "NOT REPRODUCED",
+    "NOT REPRODUCED"
+   ]
+  },
+  "d8": {
+   "verdict": "TARGET NOT LINEAR",
+   "per_model": [
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR"
+   ]
+  },
+  "d9": {
+   "verdict": "TARGET NOT LINEAR",
+   "per_model": [
+    "NOT REPRODUCED",
+    "TARGET NOT LINEAR",
+    "TARGET NOT LINEAR"
+   ]
+  }
+ },
+ "H1": {
+  "per_model": [
+   "VALID DRIVER",
+   "VALID DRIVER",
+   "OUTPUT-BIAS"
+  ],
+  "supported": true,
+  "failing_checks": {
+   "q25-7b": {
+    "D_key": "sub:+"
+   },
+   "q3-8b": {
+    "D_key": "sub:-"
+   },
+   "olmo-7b": {
+    "D_key": "sub:-",
+    "E": "output_bias"
+   }
+  }
+ },
+ "H2": {
+  "per_model": {
+   "d1/q25-7b": {
+    "A_pass": 10,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 2,
+    "D_reaching_sesoi": {
+     "sub": 5,
+     "judge": 7
+    },
+    "D_reaching_sesoi_lowcos": {
+     "sub": 0,
+     "judge": 0
+    },
+    "max_abs_cos": 0.8618844636018608
+   },
+   "d1/q3-8b": {
+    "A_pass": 15,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 0,
+    "D_reaching_sesoi": {
+     "sub": 8,
+     "judge": 8
+    },
+    "D_reaching_sesoi_lowcos": {
+     "sub": 0,
+     "judge": 0
+    },
+    "max_abs_cos": 0.9178529595550885
+   },
+   "d1/olmo-7b": {
+    "A_pass": 11,
+    "A_n": 20,
+    "A_pass_lowcos": 4,
+    "n_lowcos": 6,
+    "D_reaching_sesoi": {
+     "sub": 6,
+     "judge": 4
+    },
+    "D_reaching_sesoi_lowcos": {
+     "sub": 2,
+     "judge": 0
+    },
+    "max_abs_cos": 0.771220694877266
+   },
+   "d2/q25-7b": {
+    "A_pass": 10,
+    "A_n": 20,
+    "A_pass_lowcos": 3,
+    "n_lowcos": 6,
+    "D_reaching_sesoi": {
+     "V": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "V": 0
+    },
+    "max_abs_cos": 0.8584242015619813
+   },
+   "d2/q3-8b": {
+    "A_pass": 10,
+    "A_n": 20,
+    "A_pass_lowcos": 3,
+    "n_lowcos": 4,
+    "D_reaching_sesoi": {
+     "V": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "V": 0
+    },
+    "max_abs_cos": 0.8655301448620757
+   },
+   "d2/olmo-7b": {
+    "A_pass": 6,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 3,
+    "D_reaching_sesoi": {
+     "V": 6
+    },
+    "D_reaching_sesoi_lowcos": {
+     "V": 0
+    },
+    "max_abs_cos": 0.725121982890305
+   },
+   "d3/q25-7b": {
+    "A_pass": 4,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 4,
+    "D_reaching_sesoi": {
+     "D": 0,
+     "W": 8
+    },
+    "D_reaching_sesoi_lowcos": {
+     "D": 0,
+     "W": 2
+    },
+    "max_abs_cos": 0.9468247578046951
+   },
+   "d3/q3-8b": {
+    "A_pass": 0,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 4,
+    "D_reaching_sesoi": {
+     "D": 0,
+     "W": 1
+    },
+    "D_reaching_sesoi_lowcos": {
+     "D": 0,
+     "W": 0
+    },
+    "max_abs_cos": 0.9226672881378459
+   },
+   "d3/olmo-7b": {
+    "A_pass": 8,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 5,
+    "D_reaching_sesoi": {
+     "D": 0,
+     "W": 8
+    },
+    "D_reaching_sesoi_lowcos": {
+     "D": 0,
+     "W": 1
+    },
+    "max_abs_cos": 0.9061971364244636
+   },
+   "d4/q25-7b": {
+    "A_pass": 5,
+    "A_n": 20,
+    "A_pass_lowcos": 1,
+    "n_lowcos": 5,
+    "D_reaching_sesoi": {
+     "D": 0,
+     "W": 5
+    },
+    "D_reaching_sesoi_lowcos": {
+     "D": 0,
+     "W": 0
+    },
+    "max_abs_cos": 0.5744615721588338
+   },
+   "d4/q3-8b": {
+    "A_pass": 0,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 7,
+    "D_reaching_sesoi": {
+     "D": 0,
+     "W": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "D": 0,
+     "W": 0
+    },
+    "max_abs_cos": 0.6359951687462315
+   },
+   "d4/olmo-7b": {
+    "A_pass": 3,
+    "A_n": 20,
+    "A_pass_lowcos": 1,
+    "n_lowcos": 4,
+    "D_reaching_sesoi": {
+     "D": 0,
+     "W": 3
+    },
+    "D_reaching_sesoi_lowcos": {
+     "D": 0,
+     "W": 0
+    },
+    "max_abs_cos": 0.8288129080085617
+   },
+   "d4g/q25-7b": {
+    "A_pass": 0,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 5,
+    "D_reaching_sesoi": {
+     "correct": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "correct": 0
+    },
+    "max_abs_cos": 0.5744615721588338
+   },
+   "d4g/q3-8b": {
+    "A_pass": 0,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 7,
+    "D_reaching_sesoi": {
+     "correct": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "correct": 0
+    },
+    "max_abs_cos": 0.6359951687462315
+   },
+   "d4g/olmo-7b": {
+    "A_pass": 0,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 4,
+    "D_reaching_sesoi": {
+     "correct": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "correct": 0
+    },
+    "max_abs_cos": 0.8288129080085617
+   },
+   "d5/r1-llama-8b": {
+    "A_pass": 1,
+    "A_n": 20,
+    "A_pass_lowcos": 1,
+    "n_lowcos": 19,
+    "D_reaching_sesoi": {
+     "T": 0,
+     "judge": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "T": 0,
+     "judge": 0
+    },
+    "max_abs_cos": 0.21867086420569515
+   },
+   "d5/r1-qwen-7b": {
+    "A_pass": 0,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 19,
+    "D_reaching_sesoi": {
+     "T": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "T": 0
+    },
+    "max_abs_cos": 0.22197378938021253
+   },
+   "d5/q3-8b": {
+    "A_pass": 0,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 18,
+    "D_reaching_sesoi": {
+     "T": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "T": 0
+    },
+    "max_abs_cos": 0.32813243177575924
+   },
+   "d6/r1-qwen-7b": {
+    "A_pass": 6,
+    "A_n": 20,
+    "A_pass_lowcos": 1,
+    "n_lowcos": 5,
+    "D_reaching_sesoi": {
+     "T": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "T": 0
+    },
+    "max_abs_cos": 0.8458555813910902
+   },
+   "d6/r1-llama-8b": {
+    "missing": true
+   },
+   "d6/q3-8b": {
+    "missing": true
+   },
+   "d7/q25-7b": {
+    "A_pass": 7,
+    "A_n": 20,
+    "A_pass_lowcos": 4,
+    "n_lowcos": 14,
+    "D_reaching_sesoi": {
+     "drv": 0,
+     "ans": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "drv": 0,
+     "ans": 0
+    },
+    "max_abs_cos": 0.3364412884665413
+   },
+   "d7/q3-8b": {
+    "A_pass": 7,
+    "A_n": 20,
+    "A_pass_lowcos": 4,
+    "n_lowcos": 15,
+    "D_reaching_sesoi": {
+     "drv": 0,
+     "ans": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "drv": 0,
+     "ans": 0
+    },
+    "max_abs_cos": 0.3628434269551287
+   },
+   "d7/olmo-7b": {
+    "A_pass": 8,
+    "A_n": 20,
+    "A_pass_lowcos": 7,
+    "n_lowcos": 19,
+    "D_reaching_sesoi": {
+     "drv": 0,
+     "ans": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "drv": 0,
+     "ans": 0
+    },
+    "max_abs_cos": 0.32429927121744184
+   },
+   "d8/q25-7b": {
+    "A_pass": 3,
+    "A_n": 20,
+    "A_pass_lowcos": 1,
+    "n_lowcos": 6,
+    "D_reaching_sesoi": {
+     "flip": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "flip": 0
+    },
+    "max_abs_cos": 0.9122596902822141
+   },
+   "d8/q3-8b": {
+    "A_pass": 5,
+    "A_n": 20,
+    "A_pass_lowcos": 2,
+    "n_lowcos": 5,
+    "D_reaching_sesoi": {
+     "flip": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "flip": 0
+    },
+    "max_abs_cos": 0.8556231812308369
+   },
+   "d8/olmo-7b": {
+    "A_pass": 0,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 5,
+    "D_reaching_sesoi": {
+     "flip": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "flip": 0
+    },
+    "max_abs_cos": 0.7605409736800979
+   },
+   "d9/r1-qwen-7b": {
+    "A_pass": 4,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 9,
+    "D_reaching_sesoi": {
+     "F": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "F": 0
+    },
+    "max_abs_cos": 0.6004219396283407
+   },
+   "d9/r1-llama-8b": {
+    "A_pass": 3,
+    "A_n": 20,
+    "A_pass_lowcos": 1,
+    "n_lowcos": 12,
+    "D_reaching_sesoi": {
+     "F": 0
+    },
+    "D_reaching_sesoi_lowcos": {
+     "F": 0
+    },
+    "max_abs_cos": 0.3474749475196238
+   },
+   "d9/q3-8b": {
+    "A_pass": 2,
+    "A_n": 20,
+    "A_pass_lowcos": 0,
+    "n_lowcos": 8,
+    "D_reaching_sesoi": {
+     "F": 1
+    },
+    "D_reaching_sesoi_lowcos": {
+     "F": 0
+    },
+    "max_abs_cos": 0.40737700517054554
+   }
+  },
+  "supported": false,
+  "supported_lowcos": false
+ },
+ "H3": {
+  "per_direction": {
+   "d1": {
+    "random_auc": [
+     0.5313392734730651,
+     0.9122530956827175,
+     0.9337547444306277
+    ],
+    "real_auc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "counts": true
+   },
+   "d2": {
+    "random_auc": [
+     0.4864621777815924,
+     0.45763596830028896,
+     0.43126662947386496
+    ],
+    "real_auc": [
+     0.9998739378594113,
+     0.9998220825108002,
+     0.9968323534460561
+    ],
+    "counts": false
+   },
+   "d3": {
+    "random_auc": [
+     0.7060185185185186,
+     0.888888888888889,
+     0.9097222222222222
+    ],
+    "real_auc": [
+     0.9791666666666667,
+     1.0,
+     1.0
+    ],
+    "counts": true
+   },
+   "d4": {
+    "random_auc": [
+     0.613456504217214,
+     0.8794189525418901,
+     0.921092594901415
+    ],
+    "real_auc": [
+     0.9684710992885301,
+     0.9808037171688972,
+     0.910099351538134
+    ],
+    "counts": true
+   },
+   "d5": {
+    "random_auc": [
+     0.6187845781574858,
+     0.5683549637357087,
+     0.765888499356663
+    ],
+    "real_auc": [
+     0.788634420580315,
+     0.7649461356306102,
+     0.7704513918997453
+    ],
+    "counts": false
+   },
+   "d6": {
+    "random_auc": [
+     0.5372097887633994,
+     0.6755547067785571,
+     0.7030973059959786
+    ],
+    "real_auc": [
+     0.8182514399715721,
+     0.8270619124496443,
+     0.8453583349956005
+    ],
+    "counts": false
+   },
+   "d7": {
+    "random_auc": [
+     0.549427683546232,
+     0.8601306952748438,
+     0.7300258582418119
+    ],
+    "real_auc": [
+     0.9221229104493129,
+     0.9243597569277386,
+     0.9432388556002878
+    ],
+    "counts": false
+   },
+   "d8": {
+    "random_auc": [
+     0.8748756308363601,
+     1.0,
+     0.9997093559043284
+    ],
+    "real_auc": [
+     0.9998591481761188,
+     1.0,
+     1.0
+    ],
+    "counts": true
+   },
+   "d9": {
+    "random_auc": [
+     0.6121800444315657,
+     0.7113275613275614,
+     0.7343820701357466
+    ],
+    "real_auc": [
+     0.9874729202025638,
+     0.983044733044733,
+     0.9756787330316742
+    ],
+    "counts": false
+   }
+  },
+  "n_directions": 9,
+  "n_counting": 4,
+  "supported": false,
+  "note": "D4G shares D4's calibration and is not counted separately; D10 was not run"
+ },
+ "H4": {
+  "pairs": [
+   {
+    "pair": "d1/q25-7b",
+    "diff": 2.013069285793565
+   },
+   {
+    "pair": "d1/q3-8b",
+    "diff": 0.639441176119438
+   },
+   {
+    "pair": "d1/olmo-7b",
+    "diff": 0.36595509422967576
+   },
+   {
+    "pair": "d2/q25-7b",
+    "diff": 0.3961631649935279
+   },
+   {
+    "pair": "d2/q3-8b",
+    "diff": 0.005809166447005145
+   },
+   {
+    "pair": "d2/olmo-7b",
+    "diff": 0.14975496839436317
+   },
+   {
+    "pair": "d3/q25-7b",
+    "diff": 0.04596735267393229
+   },
+   {
+    "pair": "d3/q3-8b",
+    "diff": -0.1662481181792454
+   },
+   {
+    "pair": "d3/olmo-7b",
+    "diff": 0.05141104839668881
+   },
+   {
+    "pair": "d4/q25-7b",
+    "diff": 0.05428435017764317
+   },
+   {
+    "pair": "d4/q3-8b",
+    "diff": 0.004691501182154024
+   },
+   {
+    "pair": "d4/olmo-7b",
+    "diff": -0.011339052552773447
+   },
+   {
+    "pair": "d4g/q25-7b",
+    "diff": 0.14261693344097592
+   },
+   {
+    "pair": "d4g/q3-8b",
+    "diff": 0.010790062805696242
+   },
+   {
+    "pair": "d4g/olmo-7b",
+    "diff": -0.00659206753416881
+   },
+   {
+    "pair": "d5/r1-qwen-7b",
+    "diff": -0.010704662896706161
+   },
+   {
+    "pair": "d5/q3-8b",
+    "diff": -0.010412449709933685
+   },
+   {
+    "pair": "d6/r1-qwen-7b",
+    "diff": 0.004427169645909081
+   },
+   {
+    "pair": "d8/q25-7b",
+    "diff": 0.006559954753099933
+   },
+   {
+    "pair": "d8/q3-8b",
+    "diff": -0.009034360128460922
+   },
+   {
+    "pair": "d8/olmo-7b",
+    "diff": -0.004954598291289762
+   },
+   {
+    "pair": "d9/r1-llama-8b",
+    "diff": 0.3847799017920934
+   },
+   {
+    "pair": "d9/q3-8b",
+    "diff": 1.5786773090284993
+   }
+  ],
+  "mean": 0.24500491872094302,
+  "ci": [
+   0.06642879494340373,
+   0.48576765331067595
+  ],
+  "supported": true
+ },
+ "H7": {
+  "q25-7b": {
+   "A_fails": true,
+   "A": 0.029124125793366453,
+   "A_ci": [
+    -0.10075014577343701,
+    0.1513896898591274
+   ],
+   "D_below_sesoi": true,
+   "verdict": "TARGET NOT LINEAR",
+   "verdict_ok": false,
+   "W_not_beyond_Nlen": false,
+   "retrodicted": false
+  },
+  "q3-8b": {
+   "A_fails": true,
+   "A": 0.07311172275555017,
+   "A_ci": [
+    -0.04823314273482726,
+    0.19264030020757708
+   ],
+   "D_below_sesoi": true,
+   "verdict": "TARGET NOT LINEAR",
+   "verdict_ok": false,
+   "W_not_beyond_Nlen": true,
+   "retrodicted": false
+  }
+ },
+ "H5": {
+  "per_direction": {
+   "D4": {
+    "overall": {
+     "d4": "TARGET NOT LINEAR",
+     "d4g": "TARGET NOT LINEAR"
+    },
+    "valid": false
+   },
+   "D5": {
+    "overall": {
+     "d5": "TARGET NOT LINEAR"
+    },
+    "valid": false
+   },
+   "D6": {
+    "overall": {
+     "d6": "NOT REPRODUCED"
+    },
+    "valid": false
+   },
+   "D7": {
+    "overall": {
+     "d7": "NOT REPRODUCED"
+    },
+    "valid": false
+   },
+   "D8": {
+    "overall": {
+     "d8": "TARGET NOT LINEAR"
+    },
+    "valid": false
+   },
+   "D9": {
+    "overall": {
+     "d9": "TARGET NOT LINEAR"
+    },
+    "valid": false
+   }
+  },
+  "n_complete": 6,
+  "n_valid": 0,
+  "supported": true,
+  "decided_early": true
+ },
+ "H6": {
+  "nuisance": {
+   "D4": [],
+   "D5": [],
+   "D6": [
+    "d6/r1-qwen-7b"
+   ],
+   "D7": [],
+   "D8": [],
+   "D9": []
+  },
+  "n_directions": 1,
+  "supported": false
+ }
+}

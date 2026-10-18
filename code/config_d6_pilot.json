@@ -1,0 +1,1 @@
+{"n_samples": 4, "cap": 4096, "answer_max_clean": 512, "k_d": [0.5, 1, 2], "k_ctrl": [1], "R": 8, "c": [0.25, 0.5, 1, 2, 4, 8, 16], "n_perm": 20, "n_perm_push": 4, "e2_c": [0.25, 0.5, 1, 2, 4, 8, 16], "D_items": 10, "E_items": 2}

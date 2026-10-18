@@ -1,0 +1,136 @@
+--- base/analyze.py	2026-10-15 11:09:16.165013700 +0400
++++ analyze.py	2026-10-15 17:47:47.580322800 +0400
+@@ -34,12 +34,17 @@
+ from spec_d5 import ITEMS_D5  # noqa: E402
+ 
+ ITEMS = dict(ITEMS, d5=ITEMS_D5())
++if DIR == "d7":  # D7: per-model labels; the Check D items have their own pool ("Dpool"), outside Check A
++    from spec_d7 import ITEMS_D7, TYPES as TYPES7, ekey  # noqa: E402
++    _I7 = ITEMS_D7()
++    ITEMS["d7"] = dict(A=_I7["A"], oracle=_I7["oracle"], pilot=_I7["pilot"], Dpool=_I7["D"])
++    LAB7 = json.load(open(PRE + "_labels.json", encoding="utf-8"))
+ sets = ITEMS[DIR]
+ if PHASE == "pilot":
+     A_ids = [x["id"] for x in sets["pilot"]]
+ else:
+     A_ids = [x["id"] for x in sets["A"]]
+-meta = {x["id"]: x for k in ("A", "oracle", "pilot") for x in sets.get(k, [])}
++meta = {x["id"]: x for k in ("A", "oracle", "pilot", "Dpool") for x in sets.get(k, [])}
+ 
+ judge = {}
+ for nm in ("_clean_judge.json", "_push_judge.json"):
+@@ -61,6 +66,16 @@
+     return rec["direct"]["D"]
+ 
+ 
++_S7 = {}
++
++
++def _sign7(rec):
++    """D7: the push sign of an item (-1 known, +1 unknown entity), read from its d rows."""
++    if rec["id"] not in _S7:
++        _S7[rec["id"]] = next(int(np.sign(r["k"])) for r in rec["rows"] if r["kind"] == "d")
++    return _S7[rec["id"]]
++
++
+ def T_row(rec, j, row, target):
+     if DIR == "d1":
+         if target == "sub":
+@@ -71,6 +86,10 @@
+         return row["gen"]["V"] if target == "V" else row["gen"]["T"]
+     if DIR == "d5":
+         return row["gen"]["T"]
++    if DIR == "d7":  # drv: 1 - refusal on known entities (pushed with -d), hallucination on unknown ones (+d)
++        if target == "drv":
++            return row["direct"]["hal"] if _sign7(rec) > 0 else row["direct"]["ans"]
++        return row["direct"][target]
+     if target == "W":
+         return row["free"]["W"]
+     return row["direct"]["D"]
+@@ -87,10 +106,14 @@
+     base = [rec["rows"][0]["gen"]["T"] for rec in push] if push else [1.0]
+     DRIVE = [("T", 0.25 * float(np.mean(base)))]
+     BINARY = True
++elif DIR == "d7":  # §3: 10 points of refusal on known (-d) and of hallucination on unknown (+d) entities
++    DRIVE = [("drv", 0.10), ("ans", 0.10)]
++    BINARY = True
+ else:
+     DRIVE = [("D", 1.0 / L), ("W", 0.10)]
+     BINARY = False
+ SESOI_RHO, SESOI_AUC = 0.20, 0.60
++extra7 = None
+ 
+ 
+ # ---------------------------------------------------------------- statistics
+@@ -160,6 +183,10 @@
+     A = [byid[i] for i in A_ids if i in byid and T_clean(byid[i]) is not None]
+     T = np.array([T_clean(r) for r in A], dtype=float)
+     nprompt = np.array([r["n_prompt"] for r in A], dtype=float)
++    if DIR == "d7":  # §3 covariates: prompt length (= entity token count within a type), popularity, entity type
++        _pop = np.array([np.log10(1 + meta[r["id"]]["sitelinks"]) if meta[r["id"]].get("sitelinks") is not None else np.nan for r in A])
++        _pop[np.isnan(_pop)] = np.nanmedian(_pop)
++        nprompt = np.column_stack([nprompt, _pop] + [[float(meta[r["id"]]["type"] == t) for r in A] for t in TYPES7[1:]])
+ proj = {"d": np.array([r["P"] for r in A]), "Nlen": np.array([r["P_Nlen"] for r in A]),
+         "Npc1": np.array([r["P_Npc1"] for r in A])}
+ HA = np.array([H[r["id"]] for r in A], dtype=np.float64)
+@@ -454,6 +481,11 @@
+     reproduced = c0["mean_heldout_acc"] >= gate["mean_heldout_acc_min"]
+ elif DIR == "d5":
+     reproduced = (c0["kw_authors_strength"] >= gate["kw_rel_min"] * c0["kw_baseline"]) and                  (c0.get("cos_released_ft") is None or c0["cos_released_ft"] >= gate["cos_released_min"])
++elif DIR == "d7":  # held-out separation (mean over types), and the authors' steering (unknown direction) raises refusal beyond random
++    _rf = c0["refusal"]
++    _steer = any(_rf[c]["n"] and _rf[c]["unknown_dir"] - _rf[c]["baseline"] >= gate["refusal_rise_min"]
++                 and _rf[c]["unknown_dir"] > _rf[c]["random_mean"] for c in ("unknown", "known"))
++    reproduced = float(np.mean(list(c0["sep_per_type"].values()))) >= gate["sep_mean_auc_min"] and _steer
+ else:
+     reproduced = c0["cal_auc"] >= gate["cal_auc_min"]
+ 
+@@ -487,6 +519,39 @@
+ else:
+     verdict = "NOT SHOWN"
+ 
++if DIR == "d7":  # D7 extras: label composition of Check A, the middle items, per type, the lens target, B popularity
++    extra7 = {}
++    labs = [LAB7.get(ekey(meta[r["id"]]), {}).get("label") for r in A]
++    extra7["A_labels"] = {str(lb): dict(n=int(sum(l == lb for l in labs)),
++                                        T_mean=float(np.mean([t for t, l in zip(T, labs) if l == lb])) if lb in labs else None)
++                          for lb in ("known", "unknown", "other", None)}
++    mid = np.array([l == "other" for l in labs])
++    if mid.sum() and len(set(T[mid].tolist())) > 1:
++        extra7["A_middle"] = dict(n=int(mid.sum()), auc={k: auc_fast(P[mid], T[mid]) for k, P in proj.items()},
++                                  auc_ci_d=boot(lambda i: auc_fast(proj["d"][mid][i], T[mid][i]), int(mid.sum())))
++    extra7["A_auc_by_type"] = {}
++    for t in TYPES7:
++        tm = np.array([meta[r["id"]]["type"] == t for r in A])
++        if len(set(T[tm].tolist())) > 1:
++            extra7["A_auc_by_type"][t] = dict(n=int(tm.sum()), T_mean=float(T[tm].mean()), **{k: auc_fast(P[tm], T[tm]) for k, P in proj.items()})
++    if os.path.exists(PRE + "_lens.json"):  # secondary target (§3): logit-lens rank of the correct attribute
++        lens = json.load(open(PRE + "_lens.json", encoding="utf-8"))
++        Tl = np.array([-math.log10(lens[r["id"]]["min_rank"]) if r["id"] in lens else np.nan for r in A])
++        ok = ~np.isnan(Tl)
++        sec = {}
++        for k, P in proj.items():
++            p_, t_, z_ = P[ok], Tl[ok], nprompt[ok]
++            sec[k] = dict(rho=float(spearmanr(p_, t_)[0]), rho_ci=boot(lambda i: float(spearmanr(p_[i], t_[i])[0]), len(t_)),
++                          partial_rho=partial_rho(p_, t_, z_), partial_ci=boot(lambda i: partial_rho(p_[i], t_[i], z_[i]), len(t_)))
++        extra7["A_lens"] = dict(n=int(ok.sum()), rho_lens_correct=float(spearmanr(Tl[ok], T[ok])[0]), **sec)
++    if info.get("checkB"):
++        pj = info["checkB"]["proj"]
++        ents7 = {x["id"]: x for k in ("B", "pilot") for x in _I7[k]}
++        sl = [ents7[i.split(":")[2]].get("sitelinks") for i in pj["id"]]
++        okb = [j for j, v in enumerate(sl) if v is not None]
++        extra7["B_popularity_auc"] = auc_fast(np.log10(1 + np.array([sl[j] for j in okb], float)), np.array(pj["label"])[okb])
++        extra7["B_pairs_by_type"] = {t: sum(1 for i in pj["id"] if i.split(":")[1] == "k" and ents7[i.split(":")[2]]["type"] == t) for t in TYPES7}
++
+ B = info.get("checkB")
+ if B:
+     pj = B["proj"]
+@@ -516,7 +581,7 @@
+ if label == "LABEL SURVIVES MATCHING" and verdict == "NOT SHOWN":
+     verdict = "LABEL-ONLY"
+ 
+-summary = dict(direction=DIR, model=KEY, phase=PHASE, L=L, ell=ELL, g=info["g"], reproduced=reproduced, check0a=c0,
++summary = dict(direction=DIR, model=KEY, phase=PHASE, L=L, ell=ELL, g=info["g"], reproduced=reproduced, check0a=c0, drive_target=DRIVE[0][0], drive_sesoi=DRIVE[0][1], d7=extra7,
+                check0b=info.get("check0b"), cal=info["cal_auc"], cos=info["cos"], checkA=checkA,
+                checkC_tracking=dict(status=C_track, diffs=checkC_track), checkD=checkD, checkC_steering=checkCs,
+                checkE=checkE, oracle_D=oracleD, H2_drive=H2_drive, checkB=B, label_verdict=label,

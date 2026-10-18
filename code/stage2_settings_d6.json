@@ -1,0 +1,8 @@
+{
+ "check0a": {
+  "d6": {
+   "ratio_minus_max": 0.9,
+   "ratio_plus_min": 1.0
+  }
+ }
+}

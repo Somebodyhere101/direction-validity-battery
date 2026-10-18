@@ -1,0 +1,23 @@
+44a45,46
+>         if os.environ.get("P6_MEM_FRACTION") and device.startswith("cuda"):  # perf patch: stay inside VRAM (WDDM)
+>             torch.cuda.set_per_process_memory_fraction(float(os.environ["P6_MEM_FRACTION"]))
+182c184
+<             return self.hf(input_ids=x, attention_mask=am, position_ids=pos).logits[:, -1].float()
+---
+>             return self.hf(input_ids=x, attention_mask=am, position_ids=pos, logits_to_keep=1).logits[:, -1].float()
+209c211
+<                 o = self.hf(input_ids=x, past_key_values=cache, use_cache=True, position_ids=pos)
+---
+>                 o = self.hf(input_ids=x, past_key_values=cache, use_cache=True, position_ids=pos, logits_to_keep=1)
+224a227
+>         del cache
+225a229
+>         torch.cuda.empty_cache()
+249c253
+<             h = self.hf.model(input_ids=x).last_hidden_state
+---
+>             h = self.hf.model(input_ids=x, use_cache=False).last_hidden_state
+256a261
+>         del h
+257a263
+>         torch.cuda.empty_cache()

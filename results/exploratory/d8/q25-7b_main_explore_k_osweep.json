@@ -1,0 +1,242 @@
+{
+ "direction": "d8",
+ "model": "q25-7b",
+ "phase": "main",
+ "target": "flip",
+ "sesoi": 0.1,
+ "exploratory": true,
+ "results": [
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": -1,
+   "n": 73,
+   "kl_median": 3.3588192462921143,
+   "rand": {
+    "effect": -0.007147753598424688,
+    "ci": [
+     -0.025288117092486344,
+     0.0
+    ],
+    "ci_item_only": [
+     -0.02144326079527406,
+     0.0
+    ],
+    "n": 73,
+    "n_excluded": 0,
+    "raw_dT": 0.0,
+    "mean_ref": 0.007966198666946598
+   },
+   "perm": {
+    "n_excluded": 73,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": 1,
+   "n": 73,
+   "kl_median": 38.87643814086914,
+   "rand": {
+    "effect": -0.01400436619538999,
+    "ci": [
+     -0.0390450909187697,
+     0.01448267782893356
+    ],
+    "ci_item_only": [
+     -0.03102403022403699,
+     0.010083608271298875
+    ],
+    "n": 73,
+    "n_excluded": 0,
+    "raw_dT": 0.0136986301369863,
+    "mean_ref": 0.027766389916660902
+   },
+   "perm": {
+    "n_excluded": 73,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 8,
+   "sign": -1,
+   "n": 73,
+   "kl_median": 24.474990844726562,
+   "rand": {
+    "effect": -0.030091977855533664,
+    "ci": [
+     -0.05654907807312517,
+     -0.009285973570353583
+    ],
+    "ci_item_only": [
+     -0.04731785521809698,
+     -0.01588056525050947
+    ],
+    "n": 73,
+    "n_excluded": 0,
+    "raw_dT": 0.0,
+    "mean_ref": 0.03009197785553366
+   },
+   "perm": {
+    "n_excluded": 73,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 8,
+   "sign": 1,
+   "n": 73,
+   "kl_median": 85.95079803466797,
+   "rand": {
+    "effect": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "ci_item_only": [
+     0.0,
+     0.0
+    ],
+    "n": 16,
+    "n_excluded": 57,
+    "raw_dT": 0.0,
+    "mean_ref": 0.0
+   },
+   "perm": {
+    "n_excluded": 73,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 4,
+   "sign": -1,
+   "n": 73,
+   "kl_median": 4.6370086669921875,
+   "rand": {
+    "effect": 0.006120525024366675,
+    "ci": [
+     -0.0025283922994021875,
+     0.024323606816533148
+    ],
+    "ci_item_only": [
+     -0.0017314986754239656,
+     0.020740761410435904
+    ],
+    "n": 73,
+    "n_excluded": 0,
+    "raw_dT": 0.0136986301369863,
+    "mean_ref": 0.008318822153702745
+   },
+   "perm": {
+    "n_excluded": 73,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 4,
+   "sign": 1,
+   "n": 73,
+   "kl_median": 13.569157600402832,
+   "rand": {
+    "effect": 0.5852580773565199,
+    "ci": [
+     0.47310285347912606,
+     0.6970679702635203
+    ],
+    "ci_item_only": [
+     0.4721476963325433,
+     0.6983338369969679
+    ],
+    "n": 73,
+    "n_excluded": 0,
+    "raw_dT": 0.6027397260273972,
+    "mean_ref": 0.01748164867087735
+   },
+   "perm": {
+    "n_excluded": 73,
+    "n": 0
+   },
+   "verdict": "inconclusive",
+   "verdict_rand": "pass",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 8,
+   "sign": -1,
+   "n": 73,
+   "kl_median": 30.825721740722656,
+   "rand": {
+    "effect": -0.0012208272959521743,
+    "ci": [
+     -0.04007785072263745,
+     0.04669613613195135
+    ],
+    "ci_item_only": [
+     -0.0330848780415524,
+     0.041998897815455835
+    ],
+    "n": 73,
+    "n_excluded": 0,
+    "raw_dT": 0.0273972602739726,
+    "mean_ref": 0.028640201602774883
+   },
+   "perm": {
+    "n_excluded": 73,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 8,
+   "sign": 1,
+   "n": 73,
+   "kl_median": 36.747840881347656,
+   "rand": {
+    "effect": 0.3279660211643255,
+    "ci": [
+     0.20915701392424332,
+     0.44588900223908917
+    ],
+    "ci_item_only": [
+     0.21173999355294257,
+     0.4449237902190231
+    ],
+    "n": 73,
+    "n_excluded": 0,
+    "raw_dT": 0.3561643835616438,
+    "mean_ref": 0.02819836239731837
+   },
+   "perm": {
+    "n_excluded": 73,
+    "n": 0
+   },
+   "verdict": "inconclusive",
+   "verdict_rand": "pass",
+   "verdict_perm": null
+  }
+ ]
+}

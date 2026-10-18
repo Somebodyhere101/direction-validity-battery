@@ -1,0 +1,36 @@
+{
+ "check0a": {
+  "d1": {
+   "ablation_drop_rel_min": 0.5,
+   "actadd_rise_min": 0.2
+  },
+  "d2": {
+   "mean_heldout_acc_min": 0.7
+  },
+  "d3": {
+   "cal_auc_min": 0.9
+  },
+  "d5": {
+   "kw_rel_min": 1.5,
+   "cos_released_min": 0.8
+  },
+  "d4": {
+   "twofold_auc_min": 0.7,
+   "heldout_gain_min": 0.0,
+   "_note": "provisional until the D4 pilot; frozen in Stage 2b-D4"
+  },
+  "d4g": {
+   "twofold_auc_min": 0.7,
+   "heldout_gain_min": 0.0,
+   "_note": "provisional until the D4 pilot; frozen in Stage 2b-D4"
+  },
+  "d8": {
+   "trait_rise_min": 20.0,
+   "_note": "provisional until the D8 pilot; frozen in Stage 2b-D8"
+  },
+  "d9": {
+   "cos_released_min": 0.5,
+   "flip_adv_min": 0.05
+  }
+ }
+}

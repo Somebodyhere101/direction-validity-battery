@@ -1,0 +1,39 @@
+{
+ "direction": "d3",
+ "model": "olmo-7b",
+ "phase": "main",
+ "target": "D",
+ "sesoi": 0.03125,
+ "exploratory": true,
+ "results": [
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 37.25016403198242,
+   "rand": {
+    "effect": -0.00447880319384065,
+    "ci": [
+     -0.013694357413255026,
+     0.006118958893501329
+    ],
+    "ci_item_only": [
+     -0.013496298445057064,
+     0.003781054605120714
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": 0.08984375,
+    "mean_ref": 0.0944507899593131
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper."
+title: "Does the Direction Track the Process? Code, preregistrations and results"
+authors:
+  - family-names: Ramdan
+    given-names: Sam
+repository-code: "https://github.com/Somebodyhere101/direction-validity-battery"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Does the Direction Track the Process? A Preregistered Validity Battery for Published Hidden-State Directions"
+  authors:
+    - family-names: Ramdan
+      given-names: Sam
+  year: 2026
+  month: 10
+  publisher:
+    name: Zenodo
+references:
+  - type: article
+    title: "The Compute–Retrieve Axis Separates Prompt Types, Not Processes: Original Results, Confounds, and a Preregistered Causal Test"
+    authors:
+      - family-names: Ramdan
+        given-names: Sam
+    year: 2026
+    doi: 10.5281/zenodo.23374358

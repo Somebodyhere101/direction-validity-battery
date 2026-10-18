@@ -1,0 +1,266 @@
+<title>Does the Direction Track the Process?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the series' squared exercise-book paper; a verdict matrix up top, then one lab-sheet panel per direction. */
+:root {
+  --paper: #f6f7f4; --sheet: #ffffff; --ink: #1c2026; --pencil: #5c6571; --grid: #e2e7e2; --rule: #d2d8d3;
+  --dir: #2b58b8; --len: #7552a8; --pc1: #1f7f86; --orc: #9a6a12; --rand: #8f98a3; --perm: #4d5560;
+  --valid: #2f7d4f; --nuis: #b3502a; --notshown: #6b7480; --tnl: #4f6e8f; --bias: #a8741a; --rev: #a33a3a;
+  --display: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Literata", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --s-1: 0.86rem; --s0: 1.02rem; --s1: 1.2rem; --s2: 1.5rem; --s3: 2.05rem; --s4: 2.8rem;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #14171b; --sheet: #1b1f25; --ink: #e5e8ec; --pencil: #9aa4b0; --grid: #22282f; --rule: #2f363f;
+  --dir: #86a6ff; --len: #b99cec; --pc1: #5cc4cb; --orc: #e0b25a; --rand: #6f7984; --perm: #a9b2bd;
+  --valid: #6cc191; --nuis: #f08a5d; --notshown: #a3acb7; --tnl: #8fb1d6; --bias: #e6b25c; --rev: #ef8181; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #14171b; --sheet: #1b1f25; --ink: #e5e8ec; --pencil: #9aa4b0; --grid: #22282f; --rule: #2f363f;
+  --dir: #86a6ff; --len: #b99cec; --pc1: #5cc4cb; --orc: #e0b25a; --rand: #6f7984; --perm: #a9b2bd;
+  --valid: #6cc191; --nuis: #f08a5d; --notshown: #a3acb7; --tnl: #8fb1d6; --bias: #e6b25c; --rev: #ef8181; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 var(--s0)/1.65 var(--body); }
+main { max-width: 1080px; margin: 0 auto; padding-inline: 20px; padding-block: 0 72px; display: grid; gap: 60px; }
+.col { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.1; text-wrap: balance; margin: 0; letter-spacing: 0.005em; }
+h1 { font-size: var(--s4); } h2 { font-size: var(--s3); } h3 { font-size: var(--s1); }
+p { margin: 0; }
+a { color: var(--dir); }
+.eyebrow { font: 600 var(--s-1)/1.2 var(--display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pencil); }
+.stack { display: grid; gap: 16px; min-width: 0; }
+.muted { color: var(--pencil); }
+.mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.hero { padding-block: 52px 28px; display: grid; gap: 20px;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px; background-position: -1px -1px; border-bottom: 1px solid var(--rule); margin-inline: -20px; padding-inline: 20px; }
+.lede { font-size: var(--s1); max-width: 64ch; }
+.status { font: 500 var(--s-1)/1.5 var(--mono); color: var(--pencil); }
+.panel { background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; padding: 18px; display: grid; gap: 14px; min-width: 0; margin: 0; }
+figcaption { font-size: var(--s-1); color: var(--pencil); }
+.table-wrap { overflow-x: auto; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-size: var(--s-1); }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 600 var(--s-1)/1.3 var(--display); letter-spacing: 0.04em; color: var(--pencil); }
+td.r, th.r { text-align: right; white-space: nowrap; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.pill { display: inline-block; font: 600 0.76rem/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 8px; border-radius: 3px; border: 1px solid currentColor; white-space: nowrap; }
+.v-valid { color: var(--valid); } .v-nuis { color: var(--nuis); } .v-notshown { color: var(--notshown); } .v-tnl { color: var(--tnl); }
+.v-bias { color: var(--bias); } .v-rev { color: var(--rev); } .v-pending { color: var(--pencil); border-style: dashed; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.chip { font: 500 0.72rem/1 var(--mono); padding: 3px 5px; border-radius: 2px; background: var(--paper); border: 1px solid var(--rule); color: var(--pencil); }
+.chip.pass { color: var(--valid); border-color: currentColor; } .chip.fail { color: var(--notshown); }
+.chip.nuisance, .chip.reversal, .chip.output_bias { color: var(--nuis); border-color: currentColor; }
+.matrix td { min-width: 160px; } .matrix td:first-child { min-width: 150px; } .matrix .dsub + .pill { margin-top: 4px; }
+.dname { font: 600 var(--s0)/1.2 var(--display); } .dsub { font-size: var(--s-1); color: var(--pencil); }
+.checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.check { border-top: 2px solid var(--ink); padding-top: 10px; display: grid; gap: 4px; align-content: start; }
+.check .tag { font: 600 var(--s-1)/1 var(--mono); }
+.check p { font-size: 0.94rem; }
+.dir { display: grid; gap: 22px; }
+.dir-head { display: grid; gap: 8px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: var(--s-1); color: var(--pencil); }
+.facts b { color: var(--ink); font-weight: 500; font-family: var(--mono); font-size: 0.82rem; }
+.figs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 860px) { .figs { grid-template-columns: 1fr; } }
+svg { width: 100%; height: auto; display: block; }
+svg text { fill: var(--pencil); font: 400 11px var(--mono); }
+svg text.lab { fill: var(--ink); font: 500 12px var(--display); }
+svg text.grp { fill: var(--ink); font: 600 12px var(--display); letter-spacing: 0.04em; }
+svg .axis { stroke: var(--grid); stroke-width: 1; }
+svg .zero { stroke: var(--pencil); stroke-width: 1; stroke-dasharray: 3 3; }
+svg .ses { fill: var(--grid); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--s-1); color: var(--pencil); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.note { font-size: 0.94rem; }
+ul.plain { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; }
+.hyp td:first-child { font: 600 var(--s-1)/1.3 var(--mono); white-space: nowrap; }
+footer { border-top: 1px solid var(--rule); padding-top: 18px; font-size: var(--s-1); color: var(--pencil); display: grid; gap: 8px; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">Paper 6 · preregistered · results in progress</p>
+    <h1>Does the Direction Track the Process?</h1>
+    <p class="lede">A published direction in a model's hidden states is usually defended by two facts: it separates two sets of prompts, and pushing along it changes the output. This study runs a fixed battery of checks that ask more of it: does it follow what the model actually does on each item, beat a direction built from the same prompts without their labels, and steer beyond random pushes that change the output just as much?</p>
+    <p class="status" id="status"></p>
+  </header>
+
+  <section class="stack" aria-labelledby="m-h">
+    <h2 id="m-h">Verdicts so far</h2>
+    <p class="col muted">One verdict per direction and model, by the preregistered rules (Stage 1 §6). The chips show each check: A tracking, C the label-free nuisance comparison (tracking / steering), D steering at matched output change, E where the effect is handed on. A direction's overall verdict is the one it gets in at least two of its three models.</p>
+    <div class="table-wrap"><table class="matrix" id="matrix"></table></div>
+  </section>
+
+  <section class="stack" aria-labelledby="b-h">
+    <h2 id="b-h">The battery</h2>
+    <div class="checks" id="checks"></div>
+  </section>
+
+  <div id="dirs" class="stack" style="gap:60px"></div>
+
+  <section class="stack col" aria-labelledby="h-h">
+    <h2 id="h-h">Hypotheses</h2>
+    <div class="table-wrap"><table class="hyp" id="hyp"></table></div>
+  </section>
+
+  <section class="stack col" aria-labelledby="n-h">
+    <h2 id="n-h">What changed on the way, and what is still running</h2>
+    <ul class="plain" id="notes"></ul>
+  </section>
+
+  <footer>
+    <p>Preregistration: Stage 1 frozen 2026-10-14 17:50; Stage 2a (D1–D3) 23:05; Stage 2b for backtracking 2026-10-15 01:03 (AST). SHA-256 hashes of every frozen file are in <code>PREREG_SHA256SUMS</code>. Deviations are listed above and in <code>DEVIATIONS_LOG.md</code>.</p>
+    <p>An AI system (Claude, Anthropic), working under the author's direction, designed the battery, wrote the preregistration and code, ran the experiments and wrote this page. The author directed the work and is responsible for it.</p>
+    <p id="gen"></p>
+  </footer>
+</main>
+
+<script>
+const DATA = __DATA__;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const f = (x, d = 2) => (x === null || x === undefined || Number.isNaN(x)) ? "–" : (Math.abs(x) >= 100 ? x.toFixed(0) : x.toFixed(d));
+const ci = (c, d = 2) => c && c[0] !== null && c[0] !== undefined ? `[${f(c[0], d)}, ${f(c[1], d)}]` : "";
+const VCLASS = { "VALID DRIVER": "v-valid", "VALID TRACKER": "v-valid", "NUISANCE": "v-nuis", "NOT SHOWN": "v-notshown", "LABEL-ONLY": "v-notshown",
+  "NOT SPECIFIC": "v-notshown", "TARGET NOT LINEAR": "v-tnl", "OUTPUT-BIAS": "v-bias", "FORMAT-MEDIATED": "v-bias", "NOT REPRODUCED": "v-rev", "MIXED": "v-notshown" };
+const pill = (v) => v ? `<span class="pill ${VCLASS[v] || "v-notshown"}">${esc(v)}</span>` : `<span class="pill v-pending">pending</span>`;
+
+$("#status").textContent = DATA.status;
+$("#gen").textContent = "Page built " + DATA.generated + " from the per-model analysis summaries.";
+
+// ---------------- verdict matrix
+(() => {
+  let h = "<thead><tr><th>Direction</th><th>Model 1 (home)</th><th>Model 2</th><th>Model 3</th><th>Overall</th></tr></thead><tbody>";
+  const chip = (k, v) => v ? `<span class="chip ${esc(v)}" title="${k}: ${esc(v)}">${k} ${esc(v).replace("_", " ")}</span>` : "";
+  for (const d of DATA.directions) {
+    h += `<tr><td><div class="dname">${esc(d.name)}</div><div class="dsub">${esc(d.role)}</div></td>`;
+    for (const r of d.models) {
+      const s = r.summary;
+      h += `<td><div class="dsub">${esc(r.label)}</div>` + (s ? `${pill(s.verdict)}<div class="chips">${chip("A", s.statuses.A)}${chip("C", s.statuses.C_track)}${chip("D", s.statuses.D)}${chip("Cs", s.statuses.C_steer)}${chip("E", s.statuses.E)}</div>`
+        : `${pill(null)}<div class="dsub">${esc(r.state)}</div>`) + "</td>";
+    }
+    h += `<td>${d.overall ? pill(d.overall) : pill(null)}</td></tr>`;
+  }
+  $("#matrix").innerHTML = h + "</tbody>";
+})();
+
+// ---------------- the battery
+$("#checks").innerHTML = DATA.checks.map(c => `<div class="check"><span class="tag">${esc(c.tag)}</span><h3>${esc(c.name)}</h3><p>${esc(c.text)}</p></div>`).join("");
+
+// ---------------- charts
+const SVGNS = "http://www.w3.org/2000/svg";
+function forest(rows, opt) {
+  // rows: [{group, label, est, lo, hi, color}]; opt: {null, sesoi, min, max, unit}
+  const W = 520, rowH = 22, groups = [...new Set(rows.map(r => r.group))];
+  const top = 26, left = 150, right = 20;
+  const H = top + rows.length * rowH + groups.length * 16 + 26;
+  const vals = rows.flatMap(r => [r.lo, r.hi, r.est]).filter(v => v !== null && v !== undefined && !Number.isNaN(v));
+  let lo = Math.min(opt.min ?? Infinity, ...vals, opt.null, opt.sesoi ?? opt.null), hi = Math.max(opt.max ?? -Infinity, ...vals, opt.null, opt.sesoi ?? opt.null);
+  const pad = (hi - lo) * 0.06 || 0.1; lo -= pad; hi += pad;
+  const x = v => left + (v - lo) / (hi - lo) * (W - left - right);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria)}">`;
+  // ticks
+  const step = niceStep((hi - lo) / 5);
+  for (let t = Math.ceil(lo / step) * step; t <= hi + 1e-9; t += step) {
+    s += `<line class="axis" x1="${x(t)}" x2="${x(t)}" y1="${top - 6}" y2="${H - 22}"/><text x="${x(t)}" y="${H - 8}" text-anchor="middle">${fmtTick(t, step)}</text>`;
+  }
+  if (opt.sesoi !== undefined && opt.sesoi !== null) {
+    const a = Math.min(x(opt.null), x(opt.sesoi)), b = Math.max(x(opt.null), x(opt.sesoi));
+    if (opt.band === "both") { const a2 = Math.min(x(opt.null), x(2 * opt.null - opt.sesoi)); s += `<rect class="ses" x="${a2}" y="${top - 6}" width="${b - a2}" height="${H - 22 - top + 6}"/>`; }
+    else s += `<rect class="ses" x="${a}" y="${top - 6}" width="${b - a}" height="${H - 22 - top + 6}"/>`;
+  }
+  s += `<line class="zero" x1="${x(opt.null)}" x2="${x(opt.null)}" y1="${top - 6}" y2="${H - 22}"/>`;
+  s += `<text x="${left}" y="12">${esc(opt.unit)}</text>`;
+  let y = top;
+  for (const g of groups) {
+    s += `<text class="grp" x="0" y="${y + 9}">${esc(g)}</text>`; y += 16;
+    for (const r of rows.filter(r => r.group === g)) {
+      const cy = y + rowH / 2 - 2;
+      s += `<text class="lab" x="10" y="${cy + 4}">${esc(r.label)}</text>`;
+      if (r.est !== null && r.est !== undefined && !Number.isNaN(r.est)) {
+        if (r.lo !== null && r.lo !== undefined) s += `<line x1="${x(r.lo)}" x2="${x(r.hi)}" y1="${cy}" y2="${cy}" stroke="${r.color}" stroke-width="2"/>`;
+        s += `<circle cx="${x(r.est)}" cy="${cy}" r="4.5" fill="${r.color}"/>`;
+      } else s += `<text x="${left + 4}" y="${cy + 4}">not run</text>`;
+      y += rowH;
+    }
+  }
+  return s + "</svg>";
+}
+function niceStep(raw) { const p = Math.pow(10, Math.floor(Math.log10(raw))); const n = raw / p; return (n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10) * p; }
+function fmtTick(t, step) { const d = step >= 1 ? 0 : step >= 0.1 ? 1 : 2; return (Math.abs(t) < 1e-9 ? 0 : t).toFixed(d); }
+const C = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim() || "#888";
+
+function renderDirs() {
+  const host = $("#dirs"); host.innerHTML = "";
+  for (const d of DATA.directions) {
+    const done = d.models.filter(m => m.summary && m.summary.checkA);  // a model that stopped at the gate has no check data
+    const sec = document.createElement("section"); sec.className = "dir"; sec.setAttribute("aria-labelledby", d.key + "-h");
+    let h = `<div class="dir-head"><p class="eyebrow">${esc(d.id)} · ${esc(d.role)} · ${esc(d.claim)}</p><h2 id="${d.key}-h">${esc(d.title)}</h2>
+      <p class="col">${esc(d.summary_text)}</p><div class="facts">${d.facts.map(x => `<span>${esc(x[0])} <b>${esc(x[1])}</b></span>`).join("")}</div></div>`;
+    if (!done.length) { h += `<p class="muted">Runs for this direction are ${esc(d.models.map(m => m.state).join(", "))}.</p>`; sec.innerHTML = h; host.appendChild(sec); continue; }
+    // tracking forest
+    const tr = [];
+    for (const m of done) {
+      const A = m.summary.checkA;
+      for (const [k, lab, col] of [["d", "the direction", "--dir"], ["Nlen", "N_len (length)", "--len"], ["Npc1", "N_pc1 (within-class PC1)", "--pc1"], ["o", "oracle", "--orc"]]) {
+        const v = A[k] || {}; tr.push({ group: m.label, label: lab, est: v.est, lo: v.ci?.[0], hi: v.ci?.[1], color: C(col) });
+      }
+    }
+    const A0 = done[0].summary.checkA;
+    const isAuc = A0.primary === "auc";
+    const trOpt = { null: isAuc ? 0.5 : 0, sesoi: isAuc ? 0.6 : 0.2, unit: isAuc ? "AUC of the projection for the item's own outcome" : (A0.primary === "partial_rho" ? "partial Spearman ρ with the item's own outcome" : "Spearman ρ with the item's own outcome"), aria: d.name + " tracking" };
+    // steering forest: primary target, both signs, against random and permuted references, and the nuisance directions
+    const st = [];
+    for (const m of done) {
+      for (const [key, D] of Object.entries(m.summary.checkD)) {
+        if (!key.startsWith(d.drive_target + ":")) continue;
+        const sgn = key.endsWith("+") ? "+" : "−";
+        const g = `${m.label} · ${sgn}d`;
+        st.push({ group: g, label: "vs random", est: D.rand?.effect, lo: D.rand?.ci?.[0], hi: D.rand?.ci?.[1], color: C("--dir") });
+        st.push({ group: g, label: "vs label-permuted", est: D.perm?.effect, lo: D.perm?.ci?.[0], hi: D.perm?.ci?.[1], color: C("--perm") });
+        for (const [N, col, lab] of [["control_Nlen", "--len", "N_len, vs random"], ["control_Npc1", "--pc1", "N_pc1, vs random"]]) {
+          const c = D[N]; if (c && c.rand) st.push({ group: g, label: lab, est: c.rand.effect, lo: c.rand.ci?.[0], hi: c.rand.ci?.[1], color: C(col) });
+        }
+        if (D.authors_strength && D.authors_strength.rand) st.push({ group: g, label: "authors' strength", est: D.authors_strength.rand.effect, lo: D.authors_strength.rand.ci?.[0], hi: D.authors_strength.rand.ci?.[1], color: C("--orc") });
+      }
+    }
+    const ses = done[0].summary.drive_sesoi;
+    const stOpt = { null: 0, sesoi: ses, band: "both", unit: d.drive_unit, aria: d.name + " steering" };
+    h += `<div class="figs"><figure class="panel"><div>${forest(tr, trOpt)}</div><figcaption>Check A. ${esc(d.track_caption)} Grey band: short of the smallest effect of interest. Bars: 95% bootstrap CIs.</figcaption></figure>
+      <figure class="panel"><div>${forest(st, stOpt)}</div><figcaption>Check D. ${esc(d.drive_caption)} Effects are measured against random pushes that change the output by the same amount (KL), per item. Grey band: within ±1 smallest effect of interest.</figcaption></figure></div>`;
+    // per-model table
+    h += `<div class="table-wrap"><table><thead><tr><th>Model</th><th>Layer</th><th>Reproduction (0a)</th><th>Random-weights AUC (0b)</th><th>Hand-off (E1)</th><th>Last-block share (E2)</th><th>Label check (B)</th></tr></thead><tbody>`;
+    for (const m of done) {
+      const s = m.summary; const E = s.checkE && s.statuses.D_key ? s.checkE[s.statuses.D_key] : null;
+      h += `<tr><td>${esc(m.label)}</td><td class="r">${s.ell} / ${s.L}</td><td>${esc(d.repro(s))}</td><td class="r">${f(s.check0b?.random_twofold_auc)} <span class="muted">(real ${f(s.check0b?.real_twofold_auc)})</span></td>
+        <td class="r">${E ? (E.handoff_layer ?? "none") + " <span class='muted'>(limit " + f(E.handoff_limit, 1) + ")</span>" : "–"}</td><td class="r">${E && E.e2_fraction !== null ? f(100 * E.e2_fraction, 0) + "%" : "–"}</td><td>${esc(s.label_verdict)}</td></tr>`;
+    }
+    h += `</tbody></table></div>`;
+    if (d.notes && d.notes.length) h += `<ul class="plain note">${d.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>`;
+    sec.innerHTML = h; host.appendChild(sec);
+  }
+}
+// reproduction text per direction
+for (const d of DATA.directions) {
+  d.repro = ({ d1: s => `ablation ${f(s.check0a.jbb_baseline)}→${f(s.check0a.jbb_ablation)}, addition ${f(s.check0a.harmless_baseline)}→${f(s.check0a.harmless_actadd)}`,
+    d2: s => `held-out accuracy ${f(s.check0a.mean_heldout_acc)}`, d3: s => `calibration AUC ${f(s.check0a.cal_auc, 3)}`,
+    d5: s => `keyword ${f(s.check0a.kw_baseline)}%→${f(s.check0a.kw_authors_strength)}%` + (s.check0a.cos_released_ft !== undefined ? `, cos to released ${f(s.check0a.cos_released_ft)}` : ""),
+    d4: s => `two-fold AUC ${f(s.check0a.twofold_auc)}; their intervention ${f(s.check0a.heldout_reason_baseline)}→${f(s.check0a.heldout_reason_intervened)} reasoning accuracy`,
+    d4g: s => `two-fold AUC ${f(s.check0a.twofold_auc)} (same direction as D4)`,
+    d7: s => s.check0a.refusal ? `refusal on known entities ${f(s.check0a.refusal.known.baseline)}→${f(s.check0a.refusal.known.unknown_dir)} with the unknown direction (random ${f(s.check0a.refusal.known.random_mean)}); separation ${f(s.check0a.sep_min_auc)}` : "–",
+    d8: s => `judged sycophancy ${f(s.check0a.trait_baseline, 0)}→${f(s.check0a.trait_steered, 0)}, coherence ${f(s.check0a.coherence_baseline, 0)}→${f(s.check0a.coherence_steered, 0)}` })[d.key]
+    || (s => s.reproduced ? "rebuild check passed" : "rebuild check failed");
+}
+renderDirs();
+const mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener?.("change", renderDirs);
+new MutationObserver(renderDirs).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+// ---------------- hypotheses and notes
+$("#hyp").innerHTML = "<thead><tr><th>ID</th><th>Prediction</th><th>Status</th></tr></thead><tbody>" +
+  DATA.hypotheses.map(h => `<tr><td>${esc(h.id)}</td><td>${esc(h.text)}</td><td>${esc(h.status)}</td></tr>`).join("") + "</tbody>";
+$("#notes").innerHTML = DATA.notes.map(n => `<li>${esc(n)}</li>`).join("");
+</script>

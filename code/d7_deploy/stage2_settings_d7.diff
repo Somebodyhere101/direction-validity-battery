@@ -1,0 +1,14 @@
+--- base/stage2_settings.json	2026-10-15 11:09:16.172834500 +0400
++++ stage2_settings.json	2026-10-15 17:47:47.450370500 +0400
+@@ -13,6 +13,10 @@
+   "d5": {
+    "kw_rel_min": 1.5,
+    "cos_released_min": 0.8
++  },
++  "d7": {
++   "sep_mean_auc_min": 0.7,
++   "refusal_rise_min": 0.2
+   }
+  }
+ }
+\ No newline at end of file

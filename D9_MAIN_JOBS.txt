@@ -1,0 +1,13 @@
+# paper 6 D9 (true thinking) main runs, after Stage 2b D9 (estimate: r1-qwen-7b ~5 h, r1-llama-8b ~8.5 h, q3-8b ~9.5 h)
+paper6_d9 :: set P6_MEM_FRACTION=0.85&& python run.py d9 r1-qwen-7b cal main > logs\d9_r1-qwen-7b_cal_main.log 2>&1
+paper6_d9 :: set P6_MEM_FRACTION=0.85&& python d9_clean.py r1-qwen-7b main > logs\d9_r1-qwen-7b_clean_main.log 2>&1
+paper6_d9 :: set MAX_ROWS=16&& set P6_MEM_FRACTION=0.85&& python run.py d9 r1-qwen-7b push main > logs\d9_r1-qwen-7b_push_main.log 2>&1
+paper6_d9 :: python analyze.py d9 r1-qwen-7b main > logs\d9_r1-qwen-7b_analyze_main.log 2>&1
+paper6_d9 :: set P6_MEM_FRACTION=0.85&& python run.py d9 r1-llama-8b cal main > logs\d9_r1-llama-8b_cal_main.log 2>&1
+paper6_d9 :: set P6_MEM_FRACTION=0.85&& python d9_clean.py r1-llama-8b main > logs\d9_r1-llama-8b_clean_main.log 2>&1
+paper6_d9 :: set MAX_ROWS=12&& set P6_MEM_FRACTION=0.85&& python run.py d9 r1-llama-8b push main > logs\d9_r1-llama-8b_push_main.log 2>&1
+paper6_d9 :: python analyze.py d9 r1-llama-8b main > logs\d9_r1-llama-8b_analyze_main.log 2>&1
+paper6_d9 :: set P6_MEM_FRACTION=0.85&& python run.py d9 q3-8b cal main > logs\d9_q3-8b_cal_main.log 2>&1
+paper6_d9 :: set P6_MEM_FRACTION=0.85&& python d9_clean.py q3-8b main > logs\d9_q3-8b_clean_main.log 2>&1
+paper6_d9 :: set MAX_ROWS=12&& set P6_MEM_FRACTION=0.85&& python run.py d9 q3-8b push main > logs\d9_q3-8b_push_main.log 2>&1
+paper6_d9 :: python analyze.py d9 q3-8b main > logs\d9_q3-8b_analyze_main.log 2>&1

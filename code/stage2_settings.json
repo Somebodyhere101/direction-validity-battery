@@ -1,0 +1,32 @@
+{
+ "check0a": {
+  "d1": {
+   "ablation_drop_rel_min": 0.5,
+   "actadd_rise_min": 0.2
+  },
+  "d2": {
+   "mean_heldout_acc_min": 0.7
+  },
+  "d3": {
+   "cal_auc_min": 0.9
+  },
+  "d5": {
+   "kw_rel_min": 1.5,
+   "cos_released_min": 0.8
+  },
+  "d4": {
+   "twofold_auc_min": 0.8,
+   "heldout_gain_min": null,
+   "_note": "Stage 2b-D4: gate on separation only; the intervention's held-out accuracy change is reported, not gated"
+  },
+  "d4g": {
+   "twofold_auc_min": 0.8,
+   "heldout_gain_min": null,
+   "_note": "Stage 2b-D4: gate on separation only; the intervention's held-out accuracy change is reported, not gated"
+  },
+  "d8": {
+   "trait_rise_min": 20.0,
+   "_note": "Stage 2b-D8 (frozen 2026-10-15): judged sycophancy rise at +2.0 x vector, their 20 eval questions"
+  }
+ }
+}

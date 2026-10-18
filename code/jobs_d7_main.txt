@@ -1,0 +1,20 @@
+# Paper 6 D7 main runs (Stage 2b D7). Folder jspace\paper6_d7 on DQ. Order per model: label, cal, clean, push, lens, analyze.
+# Written, not queued. OLMo-2 has full multi-head attention: smaller label batches and push chunks, as in Stage 2a.
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run_d7.py label q25-7b main > logs\d7_q25-7b_label_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q25-7b cal main > logs\d7_q25-7b_cal_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q25-7b clean main > logs\d7_q25-7b_clean_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q25-7b push main > logs\d7_q25-7b_push_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run_d7.py lens q25-7b main > logs\d7_q25-7b_lens_main.log 2>&1
+paper6_d7 :: python analyze.py d7 q25-7b main > logs\d7_q25-7b_analyze_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run_d7.py label q3-8b main > logs\d7_q3-8b_label_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q3-8b cal main > logs\d7_q3-8b_cal_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q3-8b clean main > logs\d7_q3-8b_clean_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 q3-8b push main > logs\d7_q3-8b_push_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run_d7.py lens q3-8b main > logs\d7_q3-8b_lens_main.log 2>&1
+paper6_d7 :: python analyze.py d7 q3-8b main > logs\d7_q3-8b_analyze_main.log 2>&1
+paper6_d7 :: set LABEL_Q=16&& set P6_MEM_FRACTION=0.85&& python run_d7.py label olmo-7b main > logs\d7_olmo-7b_label_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 olmo-7b cal main > logs\d7_olmo-7b_cal_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run.py d7 olmo-7b clean main > logs\d7_olmo-7b_clean_main.log 2>&1
+paper6_d7 :: set MAX_ROWS=96&& set P6_MEM_FRACTION=0.85&& python run.py d7 olmo-7b push main > logs\d7_olmo-7b_push_main.log 2>&1
+paper6_d7 :: set P6_MEM_FRACTION=0.85&& python run_d7.py lens olmo-7b main > logs\d7_olmo-7b_lens_main.log 2>&1
+paper6_d7 :: python analyze.py d7 olmo-7b main > logs\d7_olmo-7b_analyze_main.log 2>&1

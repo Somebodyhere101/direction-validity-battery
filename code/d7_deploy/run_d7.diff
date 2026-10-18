@@ -1,0 +1,19 @@
+--- base/run.py	2026-10-15 11:09:16.169640500 +0400
++++ run.py	2026-10-15 17:47:47.450370500 +0400
+@@ -23,6 +23,7 @@
+ from spec_d5 import D5, kw
+ 
+ SPECS["d5"] = D5
++from spec_d7 import D7; SPECS["d7"] = D7  # noqa: E402,E702  (Stage 2b D7)
+ 
+ DIR, KEY, STAGE = sys.argv[1], sys.argv[2], sys.argv[3]
+ PHASE = sys.argv[4] if len(sys.argv) > 4 else "main"
+@@ -248,7 +249,7 @@
+         orc = [x for x in S["oracle"] if x["id"] in clean and oracle_T(clean[x["id"]], judged) is not None]
+         To = np.array([oracle_T(clean[x["id"]], judged) for x in orc], dtype=np.float64)
+         Ho = np.array([Hs[x["id"]] for x in orc], dtype=np.float64)
+-    o = oracle(Ho, To, binary=spec.binary_T or DIR == "d5")
++    o = spec.oracle_dir(Ho, To, orc) if hasattr(spec, "oracle_dir") else oracle(Ho, To, binary=spec.binary_T or DIR == "d5")
+     log(f"oracle: {len(orc)} items, T mean {To.mean():.3f}; cos(o,d)={o @ du:+.3f}")
+     ctrl = {"Nlen": cal["Nlen"], "Npc1": cal["Npc1"], "o": o}
+     gauss = gaussian(CFG["R"], m.d)

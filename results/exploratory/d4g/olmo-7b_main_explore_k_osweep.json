@@ -1,0 +1,242 @@
+{
+ "direction": "d4g",
+ "model": "olmo-7b",
+ "phase": "main",
+ "target": "correct",
+ "sesoi": 0.1,
+ "exploratory": true,
+ "results": [
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": -1,
+   "n": 80,
+   "kl_median": 32.00369453430176,
+   "rand": {
+    "effect": -0.004657072639576425,
+    "ci": [
+     -0.025467909893708302,
+     0.023328470566651816
+    ],
+    "ci_item_only": [
+     -0.022582649861830662,
+     0.02321975005663839
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": -0.0625,
+    "mean_ref": -0.057842927360423575
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 4,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 26.81710433959961,
+   "rand": {
+    "effect": 0.044381292953036375,
+    "ci": [
+     -0.0008012077136534921,
+     0.09904097933253374
+    ],
+    "ci_item_only": [
+     -0.0006461177380362193,
+     0.09928055752546708
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": -0.0125,
+    "mean_ref": -0.05688129295303638
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 8,
+   "sign": -1,
+   "n": 80,
+   "kl_median": 123.80712127685547,
+   "rand": {
+    "effect": -0.0029836168197018877,
+    "ci": [
+     -0.008904989811574946,
+     0.0
+    ],
+    "ci_item_only": [
+     -0.006382146667750891,
+     -0.0005745880036752303
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": -0.075,
+    "mean_ref": -0.07209147847037141
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "d",
+   "k": 8,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 122.93729019165039,
+   "rand": {
+    "effect": 0.009045343887223218,
+    "ci": [
+     -0.00806735785890237,
+     0.038058021080887704
+    ],
+    "ci_item_only": [
+     -0.006348756679036942,
+     0.036432401082462595
+    ],
+    "n": 78,
+    "n_excluded": 2,
+    "raw_dT": -0.0641025641025641,
+    "mean_ref": -0.07710184896220826
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 4,
+   "sign": -1,
+   "n": 80,
+   "kl_median": 5.533514976501465,
+   "rand": {
+    "effect": -0.04407614661392027,
+    "ci": [
+     -0.08107290326580535,
+     -0.0074928379917964735
+    ],
+    "ci_item_only": [
+     -0.07695378258143404,
+     -0.010059445227369405
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": -0.0625,
+    "mean_ref": -0.018035284301035476
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 4,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 12.232035636901855,
+   "rand": {
+    "effect": -0.028098348609284295,
+    "ci": [
+     -0.06035893254986938,
+     0.006940200262487191
+    ],
+    "ci_item_only": [
+     -0.05453660814058056,
+     0.005641905952526416
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": -0.0625,
+    "mean_ref": -0.03448498970538424
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 8,
+   "sign": -1,
+   "n": 80,
+   "kl_median": 30.24769878387451,
+   "rand": {
+    "effect": -0.00483188712014324,
+    "ci": [
+     -0.027322259517042802,
+     0.02530005298304188
+    ],
+    "ci_item_only": [
+     -0.024640752325211446,
+     0.02490573577379285
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": -0.0625,
+    "mean_ref": -0.05766811287985676
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  },
+  {
+   "kind": "o",
+   "k": 8,
+   "sign": 1,
+   "n": 80,
+   "kl_median": 48.23217010498047,
+   "rand": {
+    "effect": 0.0008488954220527978,
+    "ci": [
+     -0.021466493162327356,
+     0.031165734535012497
+    ],
+    "ci_item_only": [
+     -0.018971748581689825,
+     0.030401640003469642
+    ],
+    "n": 80,
+    "n_excluded": 0,
+    "raw_dT": -0.0625,
+    "mean_ref": -0.0633488954220528
+   },
+   "perm": {
+    "n_excluded": 80,
+    "n": 0
+   },
+   "verdict": "fail",
+   "verdict_rand": "fail",
+   "verdict_perm": null
+  }
+ ]
+}
