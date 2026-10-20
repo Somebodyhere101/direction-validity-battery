@@ -2,7 +2,7 @@
 
 Code, preregistrations and results for **"Does the Direction Track the Process? A Preregistered Validity Battery for Published Hidden-State Directions"** (Sam Ramdan, October 2026).
 
-- Paper: [`paper/direction-validity-battery.pdf`](paper/direction-validity-battery.pdf) · Zenodo: [doi:10.5281/zenodo.23450400](https://doi.org/10.5281/zenodo.23450400)
+- Paper: [`paper/direction-validity-battery.pdf`](paper/direction-validity-battery.pdf) (version 2) · Zenodo: [all versions, doi:10.5281/zenodo.23450399](https://doi.org/10.5281/zenodo.23450399); version 1 is [doi:10.5281/zenodo.23450400](https://doi.org/10.5281/zenodo.23450400)
 - Per-item results: `results-per-item-part01.zip` … `part10.zip` in the Zenodo record (kept out of git because of their size; unzip all ten into one folder)
 - Earlier papers in the series: the compute–retrieve axis ([all versions](https://doi.org/10.5281/zenodo.19444314); [version 2 with the preregistered causal test](https://doi.org/10.5281/zenodo.23374358)) and [A Compounding Fingerprint](https://doi.org/10.5281/zenodo.23318679)
 
@@ -42,6 +42,11 @@ It was applied to nine published directions on eight open models (27 direction �
 - **Hypotheses:** H1 supported; H2 not supported; H3 not supported (4 of 9 directions separate their prompts at AUC ≥ 0.80 in weight-randomised models); H4 supported (norm-matched baselines overstate effects by 0.25 of a smallest effect of interest [0.07, 0.49]); H5 supported; H6 not supported (one NUISANCE); H7 partly.
 
 All claims are about these models, layers and push strengths. Intervals are 95% bootstrap intervals.
+
+## Versions
+
+- **Version 2 (20 October 2026).** The related work, the discussion and the novelty statement in the introduction are revised. The paper now positions itself against 2026 studies that report the same gap between reading a target and pushing it, the closest being Xun's *Lagged Coupling* (arXiv:2609.01048). The read/push dissociation itself is not claimed as new. What the paper claims is the battery: per-item process targets, the oracle as a diagnostic, label-free competitors, weight-randomised calibration, and preregistered breadth. No result, number or verdict changed, and the code and results are unchanged.
+- **Version 1 (18 October 2026).** First release.
 
 ## Layout
 
