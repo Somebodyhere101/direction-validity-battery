@@ -55,3 +55,10 @@ Events after a Stage 2 freeze that the frozen files do not record. They are list
   - `oracle_sweep.py` pushes d and the oracle at 4 and 8 gaps for D3, D4, D4G and D8, on the first 80 Check D items, against the run's own Gaussian directions with the random grid extended to 24 gaps.
 - **Reference:** only the Gaussian reference is used; the permuted reference was not rerun.
 - **Results:** the paper's §5.4 and `results/exploratory/`.
+
+## 2026-10-20: corrections from a pre-submission review (paper version 3; nothing rerun or recomputed)
+- **The 4- and 8-gap sweep is post hoc.** The 2026-10-18 entry above files both exploratory analyses under Stage 1 §9. Stage 1 lists ±0.5 g and ±2 g as exploratory strengths of Check D (§5), which covers `explore_oracle_k.py`, but neither §5 nor §9 lists a sweep to 4 and 8 gaps. `oracle_sweep.py` is therefore a post hoc analysis, added after every verdict was final. It covers D3, D4, D4G and D8 only; D5, D6, D7 and D9 were not swept, and no reason was recorded at the time.
+- **Evaluable items.** Several cells lost most of their items, because pushed outputs could not be scored or their KL fell outside the random grid. Paper version 3 treats a cell with fewer than half of its items evaluable as not evaluable and lists every cell that lost items (its Appendix B).
+- **D4 gate.** As Stage 2b-D4 §4 records, the Check 0a gate was set on separation after the pilot. Under Stage 1's gate on the authors' headline effect (their intervention improving reasoning accuracy), D4 would be NOT REPRODUCED in all three models. Paper version 3 says so.
+- **FORMAT-MEDIATED.** Stage 1's format clamp was never evaluated, because no target was measured both with the format free and under a prefill.
+- **Oracle failure in the code.** `analyze.py` counts the oracle as failing Check A or D whenever it does not pass. In every TARGET NOT LINEAR verdict the oracle's one-gap push failed or reversed in both signs against at least one reference, so no verdict depends on this. It does decide the counterfactual D7 verdicts that the paper reports for the case in which the gate had passed.
